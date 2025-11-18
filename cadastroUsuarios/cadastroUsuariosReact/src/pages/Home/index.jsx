@@ -1,13 +1,14 @@
 import axios from 'axios';
 import './style.css'
 import Trash from '../../assets/trash.png'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 
 function Home() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nome, setName] = useState('');
+  //const [id, setId] = useState('')
   const [error, setError] = useState('');
   const [users, setUsers] = useState([]);
 
@@ -15,7 +16,6 @@ function Home() {
     try {
       const response = await axios.get("http://localhost:3001/listUsers");
       setUsers(response.data); // ATUALIZA O ESTADO CORRETAMENTE
-
     } catch (error) {
       if (!error?.response) {
         setError('Erro ao acessar o servidor');
@@ -40,6 +40,7 @@ function Home() {
       );
 
       setError("Usuário inserido com sucesso!");
+      console.log(response);
 
       // RECARREGA A LISTA
       listUsers(); 
@@ -51,6 +52,26 @@ function Home() {
         setError("Erro ao inserir usuário.");
       }
     }
+  }
+  
+  const handleDelete = async (id) => {
+  
+    console.log(id);
+
+    try{
+      const response = await axios.delete("http://localhost:3001/deleteUser",
+      );
+
+    }catch(error){
+      if(!error?.response){
+        setError("Error ao acessar o sevidor");
+      } else if(!id){
+        setError("Id vazio");
+      }else{
+        setError("Erro ao deletar usuário");
+      }
+    }
+
   }
 
   return (
@@ -67,15 +88,20 @@ function Home() {
 
       {users.map((user) => (
 
-        <div className='card' key={user.email}>
+        <div className='card' key={user.id}>
           <div>
+            <p>Id: <span>{user.id}</span></p>
             <p>Nome: <span>{user.nome}</span></p>
             <p>Email: <span>{user.email}</span></p>
             <p>Password: <span>{user.password}</span></p>
           </div>
 
-          <button>
-            <img src={Trash} alt="Imagem lixeira" />
+          <button onClick={() => {
+            handleDelete(user.id);
+          }}>
+
+            <img src={Trash} alt="Imagem lixeira"/>
+
           </button>
         </div>
 

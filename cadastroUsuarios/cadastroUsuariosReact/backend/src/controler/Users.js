@@ -37,3 +37,20 @@ export async function selectAllUsers(req, res) {
         }
     })
 }
+
+export async function deleteUser(req, res){
+    let id = req.body.id;
+    openDB().then(db=>{
+        try{
+            db.get("DELETE FROM Usuarios WHERE id=?", [id])
+            .then(res=>res);
+            res.json({statusCode: "200"});
+        }catch(error){
+            error.body;
+            res.json({
+                statusCode: "400"
+            })
+        }
+    })
+    
+}
