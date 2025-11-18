@@ -16,7 +16,23 @@ export async function insertUser(req, res) {
                 msg: "Usuário inserido com sucesso."
             })
         } catch (error) {
-            res.statusCode(400);
+            error.body;
+        }
+    })
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+}
+
+export async function selectAllUsers(req, res) {
+    openDB().then(db=>{
+        try{
+            db.all("SELECT * FROM Usuarios").then(pessoas=> res.json(pessoas, {
+                statusCode: "200"
+            }));
+
+        }catch(error){
             error.body;
         }
     })

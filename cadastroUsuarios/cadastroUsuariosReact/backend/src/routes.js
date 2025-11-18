@@ -1,15 +1,14 @@
 import { Router } from "express";
-import { createTable, insertUser } from "./controler/Users.js";
+import { insertUser, selectAllUsers } from "./controler/Users.js";
 
 const router = Router();
-createTable();
 
 router.get('/', (req, res)=>{
     res.json({
-        msg: "Api rodando."
+        msg: "Api atualizadaaaa."
     })
 })
 
 router.post('/insertUser', insertUser);
-
+router.get('/listUsers', selectAllUsers)
 export default router;
