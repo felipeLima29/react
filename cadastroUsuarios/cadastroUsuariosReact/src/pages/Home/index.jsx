@@ -1,21 +1,20 @@
 import axios from 'axios';
 import './style.css'
 import Trash from '../../assets/trash.png'
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 
 function Home() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nome, setName] = useState('');
-  //const [id, setId] = useState('')
   const [error, setError] = useState('');
   const [users, setUsers] = useState([]);
 
   const listUsers = async () => {
     try {
       const response = await axios.get("http://localhost:3001/listUsers");
-      setUsers(response.data); // ATUALIZA O ESTADO CORRETAMENTE
+      setUsers(response.data);
     } catch (error) {
       if (!error?.response) {
         setError('Erro ao acessar o servidor');
@@ -34,16 +33,19 @@ function Home() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/insertUser",
+      if(nome == "" || email == "" || password == ""){
+        setError('Preencha todos os campos para inserir o usuário.')
+      }else{
+        const response = await axios.post("http://localhost:3001/insertUser",
         { nome, email, password },
         { headers: { 'Content-Type': 'application/json' } }
-      );
+        );
 
-      setError("Usuário inserido com sucesso!");
-      console.log(response);
+        setError("Usuário inserido com sucesso!");
+        console.log(response);
 
-      // RECARREGA A LISTA
-      listUsers(); 
+        listUsers();
+      }
       
     } catch (error) {
       if (!error?.response) {
@@ -55,13 +57,12 @@ function Home() {
   }
   
   const handleDelete = async (id) => {
-  
-    console.log(id);
 
     try{
-      const response = await axios.delete("http://localhost:3001/deleteUser",
-      );
+      const response = await axios.delete("http://localhost:3001/deleteUser", {data: {id}});
 
+      console.log(response.data);
+      listUsers();
     }catch(error){
       if(!error?.response){
         setError("Error ao acessar o sevidor");
