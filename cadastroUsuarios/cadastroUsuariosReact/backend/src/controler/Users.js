@@ -54,3 +54,22 @@ export async function deleteUser(req, res){
     })
     
 }
+
+export async function updateUser(req, res) {
+    let usuario = req.body
+
+    try{
+        openDB().then(db=>{
+            db.run("UPDATE Usuarios set nome=?, email=?, password=? WHERE id=?", [usuario.nome, usuario.email, usuario.password, usuario.id]);
+        });
+        res.json({
+            statusCode: 200
+        })
+    }catch(error){
+        error.body;
+        res.json({
+            statusCode: "400"
+        })
+    }
+    
+}
