@@ -8,25 +8,20 @@ function UpdateUser(){
 
     const [idValue, setIdValue] = useState('');
     const [user, setUser] = useState([]);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const HandleChange = async(event) =>{
         setIdValue(event.target.value);
     };
-    const handleChangeName = async(event) =>{
-        setName(event.target.value);
-        console.log(password);
-    }
-    const handleChangeEmail = async(event) =>{
-        setEmail(event.target.value);
-        console.log(password);
-    }
-    const handleChangePassword = async(event) =>{
-        setPassword(event.target.value);
-        console.log(password);
-    }
+
+    const updateField = (id, field, value) => {
+        setUser((prev) =>
+            prev.map((u) =>
+                u.id === id ? { ...u, [field]: value } : u
+            )
+        );
+    };
+
 
     const listUser = async (id) => {
 
@@ -35,6 +30,13 @@ function UpdateUser(){
                 console.log("id nulo");
             }else{
                 const response = await axios.post('http://localhost:3001/listUser', {id});
+                
+                if(response.data == ""){
+                    setError('Não existe um usuário com esse Id.')
+                }else{
+                    setError('aaa')
+                }
+
                 console.log(response.data);
                 setUser([response.data]);
             }
@@ -43,9 +45,13 @@ function UpdateUser(){
             error.body
         }
     }
-    const updateUser = async (nome, email, password) => {
+    const updateUser = async (id, nome, email, password) => {
+
         try{
-            console.log(nome, " ", email, " ", password)
+            const response = await axios.put('http://localhost:3001/updateUser', {id, nome, email, password})
+
+            console.log(response.data);
+
         }catch(error){
             error.body
         }
@@ -64,26 +70,47 @@ function UpdateUser(){
                     <input type="text" placeholder="Digite um id" required onChange={HandleChange}/>
 
                     <button type="button" onClick={() => { listUser(idValue) }}>Procurar</button>
+
+                    <p>{error}</p>
                 </form>
             </div>
 
             {user.map((userSelected) => (
-
                 <div key={userSelected.id}>
                     <form className="form-update">
 
+                        <p>Id:</p>
+                        <input className="input-update"
+                            type="text"
+                            value={userSelected.id}
+                            readOnly/>
                         <p>Nome:</p>
-                        <input type="text" name="nome" id="nome" value={userSelected.nome} onChange={handleChangeName}/>
+                        <input className="input-update"
+                            type="text"
+                            value={userSelected.nome}
+                            onChange={(e) => updateField(userSelected.id, "nome", e.target.value)}/>
+
                         <p>Email:</p>
-                        <input type="text" name="email" id="email" value={userSelected.email} onChange={handleChangeEmail}/>
+                        <input className="input-update"
+                            type="text"
+                            value={userSelected.email}
+                            onChange={(e) => updateField(userSelected.id, "email", e.target.value)}/>
+
                         <p>Senha:</p>
-                        <input type="text" name="password" id="password" value={userSelected.password} onChange={handleChangePassword}/>
+                        <input className="input-update"
+                            type="text"
+                            value={userSelected.password}
+                            onChange={(e) => updateField(userSelected.id, "password", e.target.value)}/>
 
-                        <button type="button" onClick={() => { updateUser(name, email, password) }}>Atualizar</button>     
-
+                        <button
+                            type="button"
+                            onClick={() =>
+                            updateUser(userSelected.id ,userSelected.nome, userSelected.email, userSelected.password)
+                            }>Atualizar</button>
                     </form>
                 </div>
             ))}
+
 
         </div>
     )

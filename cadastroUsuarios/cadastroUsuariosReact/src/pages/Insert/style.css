@@ -98,3 +98,7 @@ h1{
         opacity: 0.5;
     }
 }
+
+.card-list {
+    grid-template-columns: repeat(2, 1fr); /* DUAS COLUNAS */
+}
