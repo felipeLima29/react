@@ -34,11 +34,11 @@ function UpdateUser(){
                 if(response.data == ""){
                     setError('Não existe um usuário com esse Id.')
                 }else{
-                    setError('aaa')
+                    console.log(response.data);
+                    setUser([response.data]);
+                    setError('');
                 }
 
-                console.log(response.data);
-                setUser([response.data]);
             }
             
         }catch(error){
