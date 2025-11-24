@@ -73,3 +73,17 @@ export async function updateUser(req, res) {
     }
     
 }
+
+export async function selectUser(req, res) {
+    let id = req.body.id;
+    try{
+        openDB().then(db=>{
+            db.get("SELECT * FROM Usuarios WHERE id=? ", [id]).then(user=>res.json(user));
+        })
+    }catch(error){
+        error.body;
+        res.json({
+            statusCode: "400"
+        })
+    }
+}
