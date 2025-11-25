@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Insert from "./pages/Insert";
 import UpdateUser from './pages/Update'
+import Select from "./pages/Select";
 
 export default function AppRoutes() {
   return (
@@ -9,6 +10,7 @@ export default function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/insert" element={<Insert />} />
       <Route path="/update" element={<UpdateUser />} />
+      <Route path="/select" element={<Select/>}/>
     </Routes>
   );
 }

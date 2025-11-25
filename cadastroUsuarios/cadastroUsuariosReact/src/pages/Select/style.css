@@ -1,0 +1,62 @@
+.divButton {
+    align-items: center;
+    padding: 10px;
+}
+
+img {
+    width: 20px;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px 100px 100px 100px;
+}
+
+.navGoBack {
+    border-radius: 30px;
+    background-color: #8B8AE1;
+    width: 100px;
+    height: 40px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    color: #FFE4C4;
+    font-size: 15px;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2E2D4E;
+    margin: 10px;
+    padding: 10px;
+    width: 400px;
+    border-radius: 10px;
+
+    & p {
+        color: #fff;
+        font-weight: bold;
+
+        & span {
+            font-weight: normal;
+        }
+    }
+
+    & button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+
+        & img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    & button:hover {
+        opacity: 0.5;
+    }
+}

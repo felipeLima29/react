@@ -26,3 +26,15 @@
     font-size: 17px;
     align-items: center;
 }
+#navSelect{
+    border-radius: 30px;
+    background-color: #8B8AE1;
+    height: 40px;
+    width: 200px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    color: #FFE4C4;
+    font-size: 17px;
+    align-items: center;
+}
