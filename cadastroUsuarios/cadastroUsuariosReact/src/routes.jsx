@@ -7,10 +7,14 @@ import Select from "./pages/Select";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/insert" element={<Insert />} />
-      <Route path="/update" element={<UpdateUser />} />
-      <Route path="/select" element={<Select/>}/>
+      <Route path="/"
+             element={<Home />} />
+      <Route path="/insert"
+             element={<Insert />} />
+      <Route path="/update"
+             element={<UpdateUser />} />
+      <Route path="/select" 
+             element={<Select/>} />
     </Routes>
   );
 }

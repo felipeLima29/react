@@ -1,10 +1,12 @@
 import axios from "axios"
 import Back from '../../assets/back.png'
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import './style.css'
 
 function UpdateUser(){
+    const location = useLocation();
+    const userId = location.state;
 
     const [idValue, setIdValue] = useState('');
     const [user, setUser] = useState([]);
@@ -68,7 +70,7 @@ function UpdateUser(){
             <div className="div-data">
                 <form>
                     <h1>Atualização de dados dos usuários</h1>
-                    <input type="text" placeholder="Digite um id" required onChange={HandleChange}/>
+                    <input type="text" placeholder="Digite um id" value={userId} required onChange={HandleChange}/>
 
                     <button type="button" onClick={() => { listUser(idValue) }}>Procurar</button>
 

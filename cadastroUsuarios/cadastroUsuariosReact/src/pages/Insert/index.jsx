@@ -10,7 +10,8 @@ function Insert() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nome, setName] = useState('');
-  const [error, setError] = useState('');;
+  const [error, setError] = useState('');
+  const [sucess, setSucess] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
 
 
@@ -24,12 +25,15 @@ function Insert() {
 
       setEmailVerify(false);
       setError('');
+      setSucess('');
 
       if (nome == "" || email == "" || password == "") {
         setError('Preencha todos os campos para inserir o usuário.')
+      }else if(password.length<8){
+        setError('A senha deve conter pelo menos 8 caracteres.')
       } else if (response.data == "") {
         setEmailVerify(false); // Usuário não existe.
-        
+
         try {
 
           const response = await axios.post("http://localhost:3001/insertUser",
@@ -37,7 +41,7 @@ function Insert() {
             { headers: { 'Content-Type': 'application/json' } }
           );
 
-          setError("Usuário inserido com sucesso.")
+          setSucess("Usuário inserido com sucesso.")
           console.log("Inseriu.")
 
         } catch (error) {
@@ -80,7 +84,8 @@ function Insert() {
           <button type='button' onClick={handleInsert}>Cadastrar</button>
         </form>
 
-        <p>{error}</p>
+        <p className='error'>{error}</p>
+        <p className='sucess'>{sucess}</p>
 
       </div>
     </div>

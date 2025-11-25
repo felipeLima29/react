@@ -1,6 +1,7 @@
 import axios from "axios";
 import Trash from '../../assets/trash.png';
 import Back from '../../assets/back.png';
+import Update from '../../assets/update.png'
 import { useEffect, useState } from "react";
 import './style.css';
 import { Link } from "react-router-dom";
@@ -9,6 +10,7 @@ function Select() {
 
     const [users, setUsers] = useState([]);
     const [error, setError] = useState('');
+    const [count, setCount] = useState(0);
 
 
     const listUsers = async () => {
@@ -37,6 +39,7 @@ function Select() {
             const response = await axios.delete("http://localhost:3001/deleteUser", { data: { id } });
 
             console.log(response.data);
+
             setError('Usuário deletado com sucesso.')
         } catch (error) {
             if (!error?.response) {
@@ -60,8 +63,9 @@ function Select() {
             <div className='divButton'>
                 <Link to="/"><button className="navGoBack"><img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
             </div>
-            
+
             <div className="container">
+
                 <p>{error}</p>
 
                 {users.map((user) => (
@@ -74,13 +78,17 @@ function Select() {
                             <p>Password: <span>{user.password}</span></p>
                         </div>
 
-                        <button onClick={() => {
-                            handleDelete(user.id);
-                        }}>
+                        <div className="divImg">
+                            <Link to='/update' state={user.id}><button><img src={Update} alt="upd"/></button></Link>
 
-                            <img src={Trash} alt="Imagem lixeira" />
+                            <button onClick={() => {
+                                handleDelete(user.id);
+                            }}>
 
-                        </button>
+                                <img src={Trash} alt="Imagem lixeira" />
+
+                            </button>
+                        </div>
                     </div>
 
                 ))}
