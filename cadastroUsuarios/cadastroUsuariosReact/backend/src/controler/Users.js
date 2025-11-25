@@ -87,3 +87,14 @@ export async function selectUser(req, res) {
         })
     }
 }
+
+export async function verifyEmail(req, res) {
+    let email = req.body.email;
+    try{
+        openDB().then(db=>{
+            db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email]).then(user=>res.json(user));
+        })
+    }catch(error){
+        error.body;
+    }
+}

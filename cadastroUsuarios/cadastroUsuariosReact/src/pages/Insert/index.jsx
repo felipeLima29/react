@@ -7,23 +7,33 @@ import { Link } from 'react-router-dom';
 
 function Insert() {
 
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nome, setName] = useState('');
   const [error, setError] = useState('');
   const [users, setUsers] = useState([]);
+  const [emailVerify, setEmailVerify] = useState(false);
+
 
   const listUsers = async () => {
+
     try {
       const response = await axios.get("http://localhost:3001/listUsers");
-      setUsers(response.data);
-    } catch (error) {
-      if (!error?.response) {
-        setError('Erro ao acessar o servidor');
+
+      if (response.data) {
+        setUsers(response.data);
+
       } else {
         setError("Não existe usuários no banco.");
       }
+
+    } catch (error) {
+      if (!error?.response) {
+        setError('Erro ao acessar o servidor');
+      }
     }
+
   }
 
   useEffect(() => {
@@ -34,27 +44,46 @@ function Insert() {
     e.preventDefault();
 
     try {
+      const response = await axios.post("http://localhost:3001/verifyEmail", { email });
+
+      setEmailVerify(false);
+      setError('');
+
       if (nome == "" || email == "" || password == "") {
         setError('Preencha todos os campos para inserir o usuário.')
+      } else if (response.data == "") {
+        setEmailVerify(false); // Usuário não existe.
+        try {
+
+          const response = await axios.post("http://localhost:3001/insertUser",
+            { nome, email, password },
+            { headers: { 'Content-Type': 'application/json' } }
+          );
+
+          setError("Usuário inserido com sucesso.")
+          console.log("Inseriu.")
+
+          listUsers();
+        } catch (error) {
+          if (!error?.response) {
+            setError('Erro ao acessar o servidor');
+          } else {
+            setError("Erro ao inserir usuário.");
+          }
+        }
+
       } else {
-        const response = await axios.post("http://localhost:3001/insertUser",
-          { nome, email, password },
-          { headers: { 'Content-Type': 'application/json' } }
-        );
+        setEmailVerify(true); // Usuário já existe.
 
-        setError("Usuário inserido com sucesso!");
-        console.log(response);
-
-        listUsers();
+        setError("Email ja cadastrado.");
+        console.log("Email ja cadastrado.")
       }
 
     } catch (error) {
-      if (!error?.response) {
-        setError('Erro ao acessar o servidor');
-      } else {
-        setError("Erro ao inserir usuário.");
-      }
+      console.log(error.body);
+      setError('Erro ao acessar servidor');
     }
+
   }
 
   const handleDelete = async (id) => {

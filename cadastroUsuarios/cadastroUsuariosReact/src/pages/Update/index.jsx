@@ -28,6 +28,7 @@ function UpdateUser(){
         try{
             if(!id){
                 console.log("id nulo");
+                setError('Digite um id.')
             }else{
                 const response = await axios.post('http://localhost:3001/listUser', {id});
                 
