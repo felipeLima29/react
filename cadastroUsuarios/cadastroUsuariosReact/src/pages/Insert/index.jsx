@@ -41,8 +41,7 @@ function Insert() {
 
             const response = await axios.post("http://localhost:3001/insertUser",
               { nomeTrim, emailTrim, passwordTrim },
-              { headers: { 'Content-Type': 'application/json' } }
-            );
+              { headers: { 'Content-Type': 'application/json' } });
 
 
             //setSucess("Usuário inserido com sucesso.")
@@ -75,6 +74,7 @@ function Insert() {
           console.log("Email ja cadastrado.")
 
         }
+        
       }catch (error) {
 
         console.log(error.body);
@@ -83,9 +83,8 @@ function Insert() {
 
       }
 
-
-
     }
+
   }
 
 

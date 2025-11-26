@@ -7,15 +7,20 @@ import "react-toastify/dist/ReactToastify.css";
 import './style.css'
 
 function UpdateUser() {
+
     const location = useLocation();
     const userId = location.state;
 
-    const [idValue, setIdValue] = useState('');
+    const [idValue, setIdValue] = useState(userId);
     const [user, setUser] = useState([]);
 
     const HandleChange = async (event) => {
         setIdValue(event.target.value);
     };
+
+    const getId = async () => {
+        setIdValue(userId);
+    }
 
     const updateField = (id, field, value) => {
         setUser((prev) =>
@@ -70,7 +75,7 @@ function UpdateUser() {
         } else {
 
             try {
-                const response = await axios.put('http://localhost:3001/updateUser', { id, nomeTrim, emailTrim, passwordTrim })
+                const response = await axios.put('http://localhost:3001/updateUser', { id, nomeTrim, emailTrim, passwordTrim });
 
                 console.log(response.data);
                 toast.success("Usuário atualizado com sucesso!");
@@ -85,6 +90,7 @@ function UpdateUser() {
 
 
     return (
+
         <div>
             <div className="divButton">
                 <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
@@ -142,6 +148,7 @@ function UpdateUser() {
 
 
         </div>
+
     )
 }
 
