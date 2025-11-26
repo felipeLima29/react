@@ -3,34 +3,31 @@ import './style.css';
 import Back from '../../assets/back.png';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 function Insert() {
-
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nome, setName] = useState('');
-  const [error, setError] = useState('');
-  const [sucess, setSucess] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
 
-
-  
 
   const handleInsert = async (e) => {
     e.preventDefault();
 
     try {
+
+      setEmailVerify(false); // Falso por padrão
+
       const response = await axios.post("http://localhost:3001/verifyEmail", { email });
 
-      setEmailVerify(false);
-      setError('');
-      setSucess('');
-
       if (nome == "" || email == "" || password == "") {
-        setError('Preencha todos os campos para inserir o usuário.')
-      }else if(password.length<8){
-        setError('A senha deve conter pelo menos 8 caracteres.')
+        toast.error("Preencha todos os campos para inserir o usuário.");
+      } else if (password.length < 8) {
+        toast.error('A senha deve conter pelo menos 8 caracteres.');
       } else if (response.data == "") {
         setEmailVerify(false); // Usuário não existe.
 
@@ -41,32 +38,41 @@ function Insert() {
             { headers: { 'Content-Type': 'application/json' } }
           );
 
-          setSucess("Usuário inserido com sucesso.")
+
+          //setSucess("Usuário inserido com sucesso.")
+          toast.success("Sucesso!")
           console.log("Inseriu.")
+
+          console.log(response.data);
 
         } catch (error) {
           if (!error?.response) {
-            setError('Erro ao acessar o servidor');
+            //setError('Erro ao acessar o servidor');
+            toast.error("Erro ao acessar o servidor.");
+            console.log("Erro ao acessar o servidor.")
           } else {
-            setError("Erro ao inserir usuário.");
+            //setError("Erro ao inserir usuário.");
+            toast.error("Erro ao inserir usuário.");
+            console.log("Erro ao inserir usuário.")
           }
         }
 
       } else {
         setEmailVerify(true); // Usuário já existe.
 
-        setError("Email ja cadastrado.");
+        //setError("Email ja cadastrado.");
+        toast.error("Email ja cadastrado.");
         console.log("Email ja cadastrado.")
       }
 
     } catch (error) {
       console.log(error.body);
-      setError('Erro ao acessar servidor');
+      //setError('Erro ao acessar servidor');
+      toast.error("Erro ao acessar o servidor");
     }
 
   }
 
-  
 
   return (
 
@@ -78,14 +84,11 @@ function Insert() {
 
         <form>
           <h1>Cadastro de Usuários</h1>
-          <input type="text" placeholder='Nome' required onChange={(e) => setName(e.target.value)} />
-          <input type="email" placeholder='Email' required onChange={(e) => setEmail(e.target.value)} />
-          <input type='password' placeholder='Senha' required onChange={(e) => setPassword(e.target.value)} />
+          <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
+          <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
+          <input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)} />
           <button type='button' onClick={handleInsert}>Cadastrar</button>
         </form>
-
-        <p className='error'>{error}</p>
-        <p className='sucess'>{sucess}</p>
 
       </div>
     </div>

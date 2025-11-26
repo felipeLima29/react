@@ -3,15 +3,14 @@ import Trash from '../../assets/trash.png';
 import Back from '../../assets/back.png';
 import Update from '../../assets/update.png'
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import './style.css';
 import { Link } from "react-router-dom";
 
 function Select() {
 
     const [users, setUsers] = useState([]);
-    const [error, setError] = useState('');
-    const [count, setCount] = useState(0);
-
 
     const listUsers = async () => {
 
@@ -22,12 +21,15 @@ function Select() {
                 setUsers(response.data);
 
             } else {
-                setError("Não existe usuários no banco.");
+                //setError("Não existe usuários no banco.");
+                
             }
 
         } catch (error) {
             if (!error?.response) {
-                setError('Erro ao acessar o servidor');
+                //setError('Erro ao acessar o servidor');
+                toast.error('Erro ao acessar o servidor.')
+                console.log(error.body);
             }
         }
 
@@ -40,14 +42,18 @@ function Select() {
 
             console.log(response.data);
 
-            setError('Usuário deletado com sucesso.')
+            //setMessage('Usuário deletado com sucesso.');
+            toast.success('Usuário deletado com sucesso.')
         } catch (error) {
             if (!error?.response) {
-                setError("Error ao acessar o sevidor");
+                //setMessage("Error ao acessar o sevidor");
+                toast.error('Error ao acessar o sevidor.')
             } else if (!id) {
-                setError("Id vazio");
+                //setMessage("Id vazio");
+                toast.error('Id vazio.')
             } else {
-                setError("Erro ao deletar usuário");
+                //setError("Erro ao deletar usuário");
+                toast.error('Erro ao deletar usuário.')
             }
         }
 
@@ -55,7 +61,7 @@ function Select() {
 
     useEffect(() => {
         listUsers();
-    }, []);
+    }, [users]);
 
     return (
         <div>
@@ -65,8 +71,6 @@ function Select() {
             </div>
 
             <div className="container">
-
-                <p>{error}</p>
 
                 {users.map((user) => (
 
@@ -88,6 +92,7 @@ function Select() {
                                 <img src={Trash} alt="Imagem lixeira" />
 
                             </button>
+                            
                         </div>
                     </div>
 

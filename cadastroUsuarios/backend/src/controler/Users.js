@@ -1,14 +1,14 @@
-import { openDB } from "../openDB.js";
+import { openDb } from "../openDB.js";
 
 export async function createTable() {
-    openDB().then(db=>{
+    openDb().then(db=>{
         db.exec('CREATE TABLE IF NOT EXISTS Usuarios (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
     })
 }
 
 export async function insertUser(req, res) {
     let user = req.body;
-    openDB().then(db=>{
+    openDb().then(db=>{
         try {
             db.run("INSERT INTO Usuarios (nome, email, password) VALUES (?, ?, ?) ", [user.nome, user.email, user.password]);
             res.json({
@@ -26,7 +26,7 @@ export async function insertUser(req, res) {
 }
 
 export async function selectAllUsers(req, res) {
-    openDB().then(db=>{
+    openDb().then(db=>{
         try{
             db.all("SELECT * FROM Usuarios").then(pessoas=> res.json(pessoas, {
                 statusCode: "200"
@@ -40,7 +40,7 @@ export async function selectAllUsers(req, res) {
 
 export async function deleteUser(req, res){
     let id = req.body.id;
-    openDB().then(db=>{
+    openDb().then(db=>{
         try{
             db.get("DELETE FROM Usuarios WHERE id=?", [id])
             .then(res=>res);
@@ -59,7 +59,7 @@ export async function updateUser(req, res) {
     let usuario = req.body
 
     try{
-        openDB().then(db=>{
+        openDb().then(db=>{
             db.run("UPDATE Usuarios set nome=?, email=?, password=? WHERE id=?", [usuario.nome, usuario.email, usuario.password, usuario.id]);
         });
         res.json({
@@ -77,7 +77,7 @@ export async function updateUser(req, res) {
 export async function selectUser(req, res) {
     let id = req.body.id;
     try{
-        openDB().then(db=>{
+        openDb().then(db=>{
             db.get("SELECT * FROM Usuarios WHERE id=? ", [id]).then(user=>res.json(user));
         })
     }catch(error){
@@ -91,7 +91,7 @@ export async function selectUser(req, res) {
 export async function verifyEmail(req, res) {
     let email = req.body.email;
     try{
-        openDB().then(db=>{
+        openDb().then(db=>{
             db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email]).then(user=>res.json(user));
         })
     }catch(error){
