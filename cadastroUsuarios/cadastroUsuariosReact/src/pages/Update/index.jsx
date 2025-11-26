@@ -18,10 +18,6 @@ function UpdateUser() {
         setIdValue(event.target.value);
     };
 
-    const getId = async () => {
-        setIdValue(userId);
-    }
-
     const updateField = (id, field, value) => {
         setUser((prev) =>
             prev.map((u) =>
@@ -100,7 +96,7 @@ function UpdateUser() {
                 <form>
 
                     <h1>Atualização de dados dos usuários</h1>
-                    <input type="text" placeholder="Digite um id" value={userId} required onChange={HandleChange} />
+                    <input type="text" placeholder="Digite um id" onChange={ HandleChange } defaultValue={idValue} required />
 
                     <button type="button" onClick={() => { listUser(idValue) }}>Procurar</button>
 
