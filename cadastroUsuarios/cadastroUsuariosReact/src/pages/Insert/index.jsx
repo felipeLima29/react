@@ -18,81 +18,95 @@ function Insert() {
   const handleInsert = async (e) => {
     e.preventDefault();
 
-    try {
+    setEmailVerify(false); // Falso por padrão
 
-      setEmailVerify(false); // Falso por padrão
+    const nomeTrim = nome.trim();
+    const emailTrim = email.trim();
+    const passwordTrim = password.trim();
 
-      const response = await axios.post("http://localhost:3001/verifyEmail", { email });
+    if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
+      toast.error("Preencha todos os campos para inserir o usuário.");
+    } else if (password.length < 8) {
+      toast.error('A senha deve conter pelo menos 8 caracteres.');
+    } else {
 
-      if (nome == "" || email == "" || password == "") {
-        toast.error("Preencha todos os campos para inserir o usuário.");
-      } else if (password.length < 8) {
-        toast.error('A senha deve conter pelo menos 8 caracteres.');
-      } else if (response.data == "") {
-        setEmailVerify(false); // Usuário não existe.
+      try {
 
-        try {
+        const response = await axios.post("http://localhost:3001/verifyEmail", { email });
 
-          const response = await axios.post("http://localhost:3001/insertUser",
-            { nome, email, password },
-            { headers: { 'Content-Type': 'application/json' } }
-          );
+        if (response.data == "") {
+          setEmailVerify(false); // Usuário não existe.
+
+          try {
+
+            const response = await axios.post("http://localhost:3001/insertUser",
+              { nomeTrim, emailTrim, passwordTrim },
+              { headers: { 'Content-Type': 'application/json' } }
+            );
 
 
-          //setSucess("Usuário inserido com sucesso.")
-          toast.success("Sucesso!")
-          console.log("Inseriu.")
+            //setSucess("Usuário inserido com sucesso.")
+            toast.success("Sucesso!")
+            console.log("Inseriu.")
 
-          console.log(response.data);
+            console.log(response.data);
 
-        } catch (error) {
-          if (!error?.response) {
-            //setError('Erro ao acessar o servidor');
-            toast.error("Erro ao acessar o servidor.");
-            console.log("Erro ao acessar o servidor.")
-          } else {
-            //setError("Erro ao inserir usuário.");
-            toast.error("Erro ao inserir usuário.");
-            console.log("Erro ao inserir usuário.")
+          } catch (error) {
+
+            if (!error?.response) {
+              //setError('Erro ao acessar o servidor');
+              toast.error("Erro ao acessar o servidor.");
+              console.log("Erro ao acessar o servidor.")
+            } else {
+              //setError("Erro ao inserir usuário.");
+              toast.error("Erro ao inserir usuário.");
+              console.log("Erro ao inserir usuário.")
+            }
+
           }
+
+        } else {
+
+
+          setEmailVerify(true); // Usuário já existe.
+
+          //setError("Email ja cadastrado.");
+          toast.error("Email ja cadastrado.");
+          console.log("Email ja cadastrado.")
+
         }
+      }catch (error) {
 
-      } else {
-        setEmailVerify(true); // Usuário já existe.
+        console.log(error.body);
+        //setError('Erro ao acessar servidor');
+        toast.error("Erro ao acessar o servidor");
 
-        //setError("Email ja cadastrado.");
-        toast.error("Email ja cadastrado.");
-        console.log("Email ja cadastrado.")
       }
 
-    } catch (error) {
-      console.log(error.body);
-      //setError('Erro ao acessar servidor');
-      toast.error("Erro ao acessar o servidor");
-    }
 
+
+    }
   }
 
 
-  return (
+    return (
 
-    <div>
-      <div className='divButton'>
-        <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
+      <div>
+        <div className='divButton'>
+          <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
+        </div>
+        <div className='container'>
+
+          <form>
+            <h1>Cadastro de Usuários</h1>
+            <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
+            <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
+            <input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)} />
+            <button type='button' onClick={handleInsert}>Cadastrar</button>
+          </form>
+
+        </div>
       </div>
-      <div className='container'>
-
-        <form>
-          <h1>Cadastro de Usuários</h1>
-          <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
-          <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-          <input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)} />
-          <button type='button' onClick={handleInsert}>Cadastrar</button>
-        </form>
-
-      </div>
-    </div>
-  );
-}
-
+    );
+  }
 export default Insert;

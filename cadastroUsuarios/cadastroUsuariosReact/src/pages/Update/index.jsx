@@ -70,7 +70,7 @@ function UpdateUser() {
         } else {
 
             try {
-                const response = await axios.put('http://localhost:3001/updateUser', { id, nome, email, password })
+                const response = await axios.put('http://localhost:3001/updateUser', { id, nomeTrim, emailTrim, passwordTrim })
 
                 console.log(response.data);
                 toast.success("Usuário atualizado com sucesso!");
@@ -78,7 +78,7 @@ function UpdateUser() {
             } catch (error) {
                 error.body
             }
-            
+
         }
 
     }
