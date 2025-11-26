@@ -81,7 +81,12 @@ export async function updateUser(req, res) {
 
     try {
 
-        if (usuario.nome == "") {
+        let idTrim = usuario.id.trim();
+        let nomeTrim = usuario.nome.trim();
+        let emailTrim = usuario.email.trim();
+        let passwordTrim = usuario.password.trim();
+
+        if (idTrim == "" || nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
             res.json({
                 statusCode: 200
             })
@@ -106,9 +111,20 @@ export async function updateUser(req, res) {
 export async function selectUser(req, res) {
     let id = req.body.id;
     try {
-        openDb().then(db => {
-            db.get("SELECT * FROM Usuarios WHERE id=? ", [id]).then(user => res.json(user));
-        })
+
+        let idTrim = id.trim();
+
+        if (idTrim) {
+            res.json({
+                statusCode: 400,
+                msg: "Digite um id."
+            })
+        } else {
+            openDb().then(db => {
+                db.get("SELECT * FROM Usuarios WHERE id=? ", [id]).then(user => res.json(user));
+            })
+        }
+
     } catch (error) {
         error.body;
         res.json({
@@ -119,11 +135,23 @@ export async function selectUser(req, res) {
 
 export async function verifyEmail(req, res) {
     let email = req.body.email;
-    try {
-        openDb().then(db => {
-            db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email]).then(user => res.json(user));
+
+    let emailTrim = email.trim();
+    if (emailTrim == "") {
+        res.json({
+            statusCode: 400,
+            msg: "Digite um email."
         })
-    } catch (error) {
-        error.body;
+    } else {
+
+        try {
+            openDb().then(db => {
+                db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email]).then(user => res.json(user));
+            })
+        } catch (error) {
+            error.body;
+        }
+
     }
+
 }
