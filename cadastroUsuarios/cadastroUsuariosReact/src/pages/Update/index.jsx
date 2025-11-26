@@ -57,7 +57,7 @@ function UpdateUser() {
             }
 
         } catch (error) {
-            error.body
+            error.body;
         }
     }
     const updateUser = async (id, nome, email, password) => {

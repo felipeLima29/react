@@ -88,7 +88,8 @@ export async function updateUser(req, res) {
 
         if (idTrim == "" || nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
             res.json({
-                statusCode: 200
+                statusCode: 400,
+                msg: "Preencha todos os campos"
             })
         } else {
             openDb().then(db => {
