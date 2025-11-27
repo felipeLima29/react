@@ -29,6 +29,7 @@ function Insert() {
     } else if (password.length < 8) {
       toast.error('A senha deve conter pelo menos 8 caracteres.');
     } else {
+      
 
       try {
 
@@ -92,7 +93,7 @@ function Insert() {
 
       <div>
         <div className='divButton'>
-          <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
+          <Link to="/home"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
         </div>
         <div className='container'>
 

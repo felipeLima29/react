@@ -68,10 +68,16 @@ function UpdateUser() {
 
         if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
             toast.error('Preencha todos os campos.');
-        } else {
+        }else if(passwordTrim.length<8){
+            toast.error('A senha deve conter pelo menos 8 dígitos.')
+        }
+         else {
 
             try {
-                const response = await axios.put('http://localhost:3001/updateUser', { id, nomeTrim, emailTrim, passwordTrim });
+                nome = nomeTrim;
+                email = emailTrim;
+                password = passwordTrim;
+                const response = await axios.put('http://localhost:3001/updateUser', { id, nome, email, password });
 
                 console.log(response.data);
                 toast.success("Usuário atualizado com sucesso!");
@@ -89,14 +95,14 @@ function UpdateUser() {
 
         <div>
             <div className="divButton">
-                <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
+                <Link to="/home"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
             </div>
 
             <div className="div-data">
                 <form>
 
                     <h1>Atualização de dados dos usuários</h1>
-                    <input type="text" placeholder="Digite um id" onChange={ HandleChange } defaultValue={idValue} required />
+                    <input type="number" placeholder="Digite um id" onChange={ HandleChange } defaultValue={idValue} required />
 
                     <button type="button" onClick={() => { listUser(idValue) }}>Procurar</button>
 

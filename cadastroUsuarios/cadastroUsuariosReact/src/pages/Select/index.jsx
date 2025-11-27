@@ -14,7 +14,7 @@ function Select() {
 
     const listUsers = async () => {
 
-        try {
+        try { 
             const response = await axios.get("http://localhost:3001/listUsers");
 
             if (response.data) {
@@ -68,7 +68,7 @@ function Select() {
         <div>
 
             <div className='divButton'>
-                <Link to="/"><button className="navGoBack"><img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
+                <Link to="/home"><button className="navGoBack"><img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
             </div>
 
             <div className="container">

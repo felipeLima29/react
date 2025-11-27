@@ -8,6 +8,7 @@
     align-items: center;
     flex-direction: column;
     padding: 10px 100px 100px 100px;
+    gap: 15px;
 }
 
 img {
@@ -47,6 +48,8 @@ form {
         cursor: pointer;
         color: #FFE4C4;
         font-size: 15px;
+        width: 100%;
+        
     }
 
     & button:hover {

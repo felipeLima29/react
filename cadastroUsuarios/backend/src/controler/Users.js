@@ -8,30 +8,44 @@ export async function createTable() {
 
 export async function insertUser(req, res) {
     let user = req.body;
-    openDb().then(db => {
-        try {
 
-            let nomeTrim = user.nome.trim();
-            let emailTrim = user.email.trim();
-            let passwordTrim = user.password.trim();
+    let nome = user.nome;
+    let email = user.email;
+    let password = user.password;
 
-            if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
-                res.json({
-                    statusCode: 400,
-                    msg: "Preencha todos os campos."
+
+    if (typeof nome === 'string' || typeof email === 'string' || typeof password === 'string') {
+        const nomeTrim = nome.trim();
+        const emailTrim = email.trim();
+        const passwordTrim = password.trim();
+
+        if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
+            res.status(400);
+            res.json({
+                msg: "Preencha todos os campos."
+            });
+        } else {
+            try {
+                openDb().then(db => {
+                    db.run("INSERT INTO Usuarios (nome, email, password) VALUES (?, ?, ?) ", [user.nome, user.email, user.password]);
+                    res.json({
+                        statusCode: 200,
+                        msg: "Usuário inserido com sucesso."
+                    })
                 })
-            } else {
-                db.run("INSERT INTO Usuarios (nome, email, password) VALUES (?, ?, ?) ", [user.nome, user.email, user.password]);
-                res.json({
-                    statusCode: 200,
-                    msg: "Usuário inserido com sucesso."
-                })
-
+            } catch (error) {
+                error.body;
             }
-        } catch (error) {
-            error.body;
         }
-    })
+
+
+    } else {
+        res.status(400)
+        res.json({
+            msg: "Erro na tipagem dos dados fornecidos"
+        })
+
+    }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -53,9 +67,12 @@ export async function selectAllUsers(req, res) {
 
 export async function deleteUser(req, res) {
     let id = req.body.id;
-    openDb().then(db => {
 
-        if (id == "" || id == null) {
+
+    openDb().then(db => {
+        let idString = id.toString();
+        let idTrim = idString.trim();
+        if (idTrim == "" || idTrim == null) {
             res.json({
                 statusCode: 400,
                 msg: "Digite um id."
@@ -65,11 +82,11 @@ export async function deleteUser(req, res) {
                 db.get("DELETE FROM Usuarios WHERE id=?", [id])
                     .then(res => res);
                 res.json({ statusCode: "200" });
-            } catch (error) {
-                error.body;
+            } catch (res) {
+                res.code(400);
                 res.json({
                     statusCode: "400"
-                })
+                });
             }
         }
     })
@@ -80,13 +97,14 @@ export async function updateUser(req, res) {
     let usuario = req.body
 
     try {
-
-        let idTrim = usuario.id.trim();
+        let idString = usuario.id.toString();
+        let idTrim = idString.trim();
         let nomeTrim = usuario.nome.trim();
         let emailTrim = usuario.email.trim();
         let passwordTrim = usuario.password.trim();
 
         if (idTrim == "" || nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
+            res.status(400);
             res.json({
                 statusCode: 400,
                 msg: "Preencha todos os campos"
@@ -102,8 +120,10 @@ export async function updateUser(req, res) {
 
     } catch (error) {
         error.body;
+        res.status(400)
         res.json({
-            statusCode: "400"
+            statusCode: "400",
+            msg: "Ocorreu algum erro, confira se você inseriu todos os dados necessários."
         })
     }
 
@@ -111,26 +131,31 @@ export async function updateUser(req, res) {
 
 export async function selectUser(req, res) {
     let id = req.body.id;
-    try {
 
-        let idTrim = id.trim();
+    let idString = id.toString();
+    let idTrim = idString.trim();
 
-        if (idTrim) {
-            res.json({
-                statusCode: 400,
-                msg: "Digite um id."
-            })
-        } else {
+    if (idTrim == "") {
+        res.json({
+            statusCode: 400,
+            msg: "Digite um id."
+        })
+    } else {
+
+        try {
+
             openDb().then(db => {
                 db.get("SELECT * FROM Usuarios WHERE id=? ", [id]).then(user => res.json(user));
             })
+
+        } catch (error) {
+            res.status(400);
+            res.json({
+                statusCode: "400",
+                msg: "Ocorreu algum erro."
+            })
         }
 
-    } catch (error) {
-        error.body;
-        res.json({
-            statusCode: "400"
-        })
     }
 }
 
@@ -139,6 +164,7 @@ export async function verifyEmail(req, res) {
 
     let emailTrim = email.trim();
     if (emailTrim == "") {
+        res.status(400);
         res.json({
             statusCode: 400,
             msg: "Digite um email."
@@ -148,11 +174,58 @@ export async function verifyEmail(req, res) {
         try {
             openDb().then(db => {
                 db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email]).then(user => res.json(user));
-            })
+            });
         } catch (error) {
             error.body;
         }
 
     }
+
+}
+
+export async function verifyPassword(req, res) {
+    let password = req.body.password;
+
+    let passwordTrim = password.trim();
+    if (passwordTrim == "") {
+        res.status(400);
+        res.json({
+            statusCode: 400,
+            msg: "Digite uma senha."
+        })
+    }else{
+        
+        try{
+            openDb().then(db => {
+                db.get("SELECT * FROM Usuarios WHERE password LIKE ?", [email]).then(user => res.json(user))
+            });
+        }catch(error){
+            error.body;
+        }
+    }
+
+}
+
+export async function loginUser(req, res) {
+    let user = req.body;
+
+    let emailTrim = user.email.trim();
+    let passwordTrim = user.password.trim();
+
+    if (emailTrim == "" || passwordTrim == "") {
+        res.status(400)
+
+        res.json({ msg: "Digite algo nos campos de email e password." });
+    } else if (passwordTrim.length < 8) {
+        res.status(400);
+        res.json({ msg: "A senha deve conter ao menos 8 dígitos." });
+    } else {
+
+        openDb().then(db => {
+            db.get("SELECT * FROM Usuarios WHERE email, password LIKE ?", [emailTrim]).then(user => res.json(user));
+        })
+
+    }
+
 
 }
