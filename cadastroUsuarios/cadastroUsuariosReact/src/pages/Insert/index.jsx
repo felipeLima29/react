@@ -9,9 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Insert() {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [nome, setName] = useState('');
+  const [emailUser, setEmail] = useState('');
+  const [passwordUser, setPassword] = useState('');
+  const [nomeUser, setName] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
 
 
@@ -20,18 +20,23 @@ function Insert() {
 
     setEmailVerify(false); // Falso por padrão
 
-    const nomeTrim = nome.trim();
-    const emailTrim = email.trim();
-    const passwordTrim = password.trim();
+    const nomeTrim = nomeUser.trim();
+    const emailTrim = emailUser.trim();
+    const passwordTrim = passwordUser.trim();
 
     if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
       toast.error("Preencha todos os campos para inserir o usuário.");
-    } else if (password.length < 8) {
+    } else if (passwordUser.length < 8) {
       toast.error('A senha deve conter pelo menos 8 caracteres.');
     } else {
-      
+
 
       try {
+
+
+        const nome = nomeTrim;
+        const email = emailTrim;
+        const password = passwordTrim;
 
         const response = await axios.post("http://localhost:3001/verifyEmail", { email });
 
@@ -41,7 +46,7 @@ function Insert() {
           try {
 
             const response = await axios.post("http://localhost:3001/insertUser",
-              { nomeTrim, emailTrim, passwordTrim },
+              { nome, email, password },
               { headers: { 'Content-Type': 'application/json' } });
 
 
@@ -75,8 +80,8 @@ function Insert() {
           console.log("Email ja cadastrado.")
 
         }
-        
-      }catch (error) {
+
+      } catch (error) {
 
         console.log(error.body);
         //setError('Erro ao acessar servidor');
@@ -89,24 +94,24 @@ function Insert() {
   }
 
 
-    return (
+  return (
 
-      <div>
-        <div className='divButton'>
-          <Link to="/home"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
-        </div>
-        <div className='container'>
-
-          <form>
-            <h1>Cadastro de Usuários</h1>
-            <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
-            <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-            <input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)} />
-            <button type='button' onClick={handleInsert}>Cadastrar</button>
-          </form>
-
-        </div>
+    <div>
+      <div className='divButton'>
+        <Link to="/home"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
       </div>
-    );
-  }
+      <div className='container'>
+
+        <form>
+          <h1>Cadastro de Usuários</h1>
+          <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
+          <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
+          <input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)} />
+          <button type='button' onClick={handleInsert}>Cadastrar</button>
+        </form>
+
+      </div>
+    </div>
+  );
+}
 export default Insert;

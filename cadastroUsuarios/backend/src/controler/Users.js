@@ -184,25 +184,25 @@ export async function verifyEmail(req, res) {
 }
 
 export async function verifyPassword(req, res) {
-    // let password = req.body.password;
+    let password = req.body.password;
 
-    // let passwordTrim = password.trim();
-    // if (passwordTrim == "") {
-    //     res.status(400);
-    //     res.json({
-    //         statusCode: 400,
-    //         msg: "Digite uma senha."
-    //     })
-    // }else{
+    let passwordTrim = password.trim();
+    if (passwordTrim == "") {
+        res.status(400);
+        res.json({
+            statusCode: 400,
+            msg: "Digite uma senha."
+        })
+    }else{
 
-    //     try{
-    //         openDb().then(db => {
-    //             db.get("SELECT * FROM Usuarios WHERE password LIKE ?", [email]).then(user => res.json(user))
-    //         });
-    //     }catch(error){
-    //         error.body;
-    //     }
-    // }
+        try{
+            openDb().then(db => {
+                db.get("SELECT * FROM Usuarios WHERE password LIKE ?", [email]).then(user => res.json(user))
+            });
+        }catch(error){
+            error.body;
+        }
+    }
 
 }
 
@@ -222,17 +222,15 @@ export async function loginUser(req, res) {
     } else {
 
         try {
-            const email = emailTrim
-            const password = passwordTrim
+            const email = emailTrim;
+            const password = passwordTrim;
+            let result = "";
             openDb().then(db => {
                 db.get("SELECT * FROM Usuarios WHERE email=? AND password=?", [email, password]).then(user => res.json(user));
-
-            })
+            });
         }catch(error){
-            res.json({msg: "diz"})
-        }
-
-        
+            res.json({msg: "Erro ao buscar usuário"})
+        }        
 
     }
 
