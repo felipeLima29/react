@@ -224,12 +224,13 @@ export async function loginUser(req, res) {
         try {
             const email = emailTrim;
             const password = passwordTrim;
-            let result = "";
             openDb().then(db => {
-                db.get("SELECT * FROM Usuarios WHERE email=? AND password=?", [email, password]).then(user => res.json(user));
+                db.get("SELECT * FROM Usuarios WHERE email=? AND password=?", [email, password])
+                .then(user => res.json(user))
+                .catch(res.json({msg:"Usuário não encontrado"}));
             });
         }catch(error){
-            res.json({msg: "Erro ao buscar usuário"})
+            res.json({msg: "Erro ao buscar usuário"});
         }        
 
     }
