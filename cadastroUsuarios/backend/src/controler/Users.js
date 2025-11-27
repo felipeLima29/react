@@ -184,25 +184,25 @@ export async function verifyEmail(req, res) {
 }
 
 export async function verifyPassword(req, res) {
-    let password = req.body.password;
+    // let password = req.body.password;
 
-    let passwordTrim = password.trim();
-    if (passwordTrim == "") {
-        res.status(400);
-        res.json({
-            statusCode: 400,
-            msg: "Digite uma senha."
-        })
-    }else{
-        
-        try{
-            openDb().then(db => {
-                db.get("SELECT * FROM Usuarios WHERE password LIKE ?", [email]).then(user => res.json(user))
-            });
-        }catch(error){
-            error.body;
-        }
-    }
+    // let passwordTrim = password.trim();
+    // if (passwordTrim == "") {
+    //     res.status(400);
+    //     res.json({
+    //         statusCode: 400,
+    //         msg: "Digite uma senha."
+    //     })
+    // }else{
+
+    //     try{
+    //         openDb().then(db => {
+    //             db.get("SELECT * FROM Usuarios WHERE password LIKE ?", [email]).then(user => res.json(user))
+    //         });
+    //     }catch(error){
+    //         error.body;
+    //     }
+    // }
 
 }
 
@@ -221,9 +221,18 @@ export async function loginUser(req, res) {
         res.json({ msg: "A senha deve conter ao menos 8 dígitos." });
     } else {
 
-        openDb().then(db => {
-            db.get("SELECT * FROM Usuarios WHERE email, password LIKE ?", [emailTrim]).then(user => res.json(user));
-        })
+        try {
+            const email = emailTrim
+            const password = passwordTrim
+            openDb().then(db => {
+                db.get("SELECT * FROM Usuarios WHERE email=? AND password=?", [email, password]).then(user => res.json(user));
+
+            })
+        }catch(error){
+            res.json({msg: "diz"})
+        }
+
+        
 
     }
 
