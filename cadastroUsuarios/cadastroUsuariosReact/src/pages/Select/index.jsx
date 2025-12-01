@@ -14,20 +14,18 @@ function Select() {
 
     const listUsers = async () => {
 
-        try { 
+        try {
             const response = await axios.get("http://localhost:3001/listUsers");
 
             if (response.data) {
                 setUsers(response.data);
 
             } else {
-                //setError("Não existe usuários no banco.");
-                
+                toast.error("Sem usuários.")
             }
 
         } catch (error) {
             if (!error?.response) {
-                //setError('Erro ao acessar o servidor');
                 toast.error('Erro ao acessar o servidor.')
                 console.log(error.body);
             }
@@ -36,35 +34,38 @@ function Select() {
     }
 
     const handleDelete = async (id) => {
+        const getToken = localStorage.getItem('token');
 
         try {
-            const response = await axios.delete("http://localhost:3001/deleteUser", { data: { id } });
+            const response = await axios.delete("http://localhost:3001/deleteUser", {
+                data: { id },
+                headers: {
+                    Authorization: `Bearer ${getToken}`
+                }
+            });
 
             console.log(response.data);
-
-            //setMessage('Usuário deletado com sucesso.');
-            toast.success('Usuário deletado com sucesso.')
+            toast.success('Usuário deletado com sucesso.');
         } catch (error) {
-            if (!error?.response) {
-                //setMessage("Error ao acessar o sevidor");
-                toast.error('Error ao acessar o sevidor.')
+            console.log(error);
+
+            if (!error.response) {
+                toast.error('Erro ao acessar o servidor.');
             } else if (!id) {
-                //setMessage("Id vazio");
-                toast.error('Id vazio.')
+                toast.error('Id vazio.');
             } else {
-                //setError("Erro ao deletar usuário");
-                toast.error('Erro ao deletar usuário.')
+                toast.error('Erro ao deletar usuário.');
             }
         }
-
-    }
+        listUsers();
+    };
 
     useEffect(() => {
         listUsers();
-    }, [users]);
+    }, []);
 
     return (
-        
+
         <div>
 
             <div className='divButton'>
@@ -84,7 +85,7 @@ function Select() {
                         </div>
 
                         <div className="divImg">
-                            <Link to='/update' state={user.id}><button><img src={Update} alt="upd"/></button></Link>
+                            <Link to='/update' state={user.id}><button><img src={Update} alt="upd" /></button></Link>
 
                             <button onClick={() => {
                                 handleDelete(user.id);
@@ -93,7 +94,7 @@ function Select() {
                                 <img src={Trash} alt="Imagem lixeira" />
 
                             </button>
-                            
+
                         </div>
                     </div>
 

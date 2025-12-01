@@ -24,6 +24,11 @@ export async function insertUser(req, res) {
             res.json({
                 msg: "Preencha todos os campos."
             });
+        } else if (passwordTrim < 8) {
+            res.status(400);
+            res.json({
+                msg: "A senha deve conter mais que 8 dígitos."
+            });
         } else {
             try {
                 openDb().then(db => {
@@ -79,9 +84,8 @@ export async function deleteUser(req, res) {
             })
         } else {
             try {
-                db.get("DELETE FROM Usuarios WHERE id=?", [id])
-                    .then(res => res);
-                res.json({ statusCode: "200" });
+                db.run("DELETE FROM Usuarios WHERE id=?", [id])
+                    .then(response => res.json({msg: "Foi."}));
             } catch (res) {
                 res.code(400);
                 res.json({
@@ -174,14 +178,14 @@ export async function verifyEmail(req, res) {
         try {
             openDb().then(db => {
                 db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email])
-                .then(user => {
-                    if(!user){
-                        res.json({msg: "Email não cadastrado."})
-                    }
+                    .then(user => {
+                        if (!user) {
+                            res.json({ msg: "Email não cadastrado." })
+                        }
 
-                    res.json(user)
+                        res.json(user)
 
-                });
+                    });
             });
         } catch (error) {
             error.body;
@@ -211,18 +215,18 @@ export async function loginUser(req, res) {
             const password = passwordTrim;
             openDb().then(db => {
                 db.get("SELECT * FROM Usuarios WHERE email=? AND password=?", [email, password])
-                .then(user => {
-                    if(!user){
-                        res.json({msg: "Usuário não encontrado."})
-                    }
+                    .then(user => {
+                        if (!user) {
+                            res.json({ msg: "Usuário não encontrado." })
+                        }
 
-                    res.json(user);
+                        res.json(user);
 
-                });
+                    });
             });
-        }catch(error){
-            res.json({msg: "Erro ao buscar usuário"});
-        }        
+        } catch (error) {
+            res.json({ msg: "Erro ao buscar usuário" });
+        }
 
     }
 

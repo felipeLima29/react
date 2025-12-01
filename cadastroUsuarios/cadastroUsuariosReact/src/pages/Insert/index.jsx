@@ -20,7 +20,7 @@ function Insert() {
 
     const getToken = localStorage.getItem('token');
     console.log(getToken)
-    
+
     setEmailVerify(false); // Falso por padrão
 
     const nomeTrim = nomeUser.trim();
@@ -41,54 +41,56 @@ function Insert() {
         const email = emailTrim;
         const password = passwordTrim;
 
-        const response = await axios.post("http://localhost:3001/verifyEmail", { email });
+        if (!getToken) {
+          toast.error("Token inválido ou expirado.")
+        } else {
 
-        if (response.data.msg == "Email não cadastrado.") {
-          setEmailVerify(false); // Usuário não existe.
+          const response = await axios.post("http://localhost:3001/verifyEmail",
+            { email },
+            { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` } });
 
-          try {
+          if (response.data.msg == "Email não cadastrado.") {
+            setEmailVerify(false); // Usuário não existe.
 
-            const response = await axios.post("http://localhost:3001/insertUser",
-              { nome, email, password },
-              { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` } });
-              
+            try {
 
+              const response = await axios.post("http://localhost:3001/insertUser",
+                { nome, email, password },
+                {
+                  headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` }
+                });
 
-            //setSucess("Usuário inserido com sucesso.")
-            toast.success("Sucesso!")
-            console.log("Inseriu.")
+              toast.success("Sucesso!")
+              console.log("Inseriu.")
 
-            console.log(response.data);
+              console.log(response.data);
 
-          } catch (error) {
+            } catch (error) {
 
-            if (!error?.response) {
-              //setError('Erro ao acessar o servidor');
-              toast.error("Erro ao acessar o servidor.");
-              console.log("Erro ao acessar o servidor.")
-            } else {
-              //setError("Erro ao inserir usuário.");
-              toast.error("Erro ao inserir usuário.");
-              console.log("Erro ao inserir usuário.")
+              if (!error?.response) {
+                toast.error("Erro ao acessar o servidor.");
+                console.log("Erro ao acessar o servidor.")
+              } else {
+                toast.error("Erro ao inserir usuário.");
+                console.log("Erro ao inserir usuário.")
+              }
+
             }
+
+          } else {
+
+
+            setEmailVerify(true); // Usuário já existe.
+
+            toast.error("Email ja cadastrado.");
+            console.log("Email ja cadastrado.")
 
           }
 
-        } else {
-
-
-          setEmailVerify(true); // Usuário já existe.
-
-          //setError("Email ja cadastrado.");
-          toast.error("Email ja cadastrado.");
-          console.log("Email ja cadastrado.")
-
         }
-
       } catch (error) {
 
         console.log(error.body);
-        //setError('Erro ao acessar servidor');
         toast.error("Erro ao acessar o servidor");
 
       }
