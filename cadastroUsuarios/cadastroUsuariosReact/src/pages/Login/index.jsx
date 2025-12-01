@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -8,6 +8,7 @@ function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
 
@@ -18,13 +19,38 @@ function Login() {
             toast.error("Preencha todos os campos para inserir o usuário.");
         } else if (password.length < 8) {
             toast.error('A senha deve conter pelo menos 8 caracteres.');
-        }else{
+        } else {
 
-            try{
+            try {
 
-                console.log(email, "   ", password);
+                const response = await axios.post('http://localhost:3001/loginUser', { email, password });
 
-            }catch(error){
+                console.log(response.data);
+                if (response.data.msg == "Usuário não encontrado.") {
+
+                    toast.error('Usuário não encontrado');
+
+                } else {
+
+                    try {
+
+                        const token = await axios.post('http://localhost:3001/getToken', {email, password});
+                        localStorage.setItem('token', token.data)
+                        navigate('/home');
+
+
+                        toast.success('Login realizado com sucesso.');
+                        console.log(token);
+
+
+                    } catch (error) {
+                        error.body;
+                        toast.error("erro");
+                    }
+
+                }
+
+            } catch (error) {
                 error.body;
             }
 

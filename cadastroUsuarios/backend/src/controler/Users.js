@@ -173,35 +173,20 @@ export async function verifyEmail(req, res) {
 
         try {
             openDb().then(db => {
-                db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email]).then(user => res.json(user));
+                db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email])
+                .then(user => {
+                    if(!user){
+                        res.json({msg: "Email não cadastrado."})
+                    }
+
+                    res.json(user)
+
+                });
             });
         } catch (error) {
             error.body;
         }
 
-    }
-
-}
-
-export async function verifyPassword(req, res) {
-    let password = req.body.password;
-
-    let passwordTrim = password.trim();
-    if (passwordTrim == "") {
-        res.status(400);
-        res.json({
-            statusCode: 400,
-            msg: "Digite uma senha."
-        })
-    }else{
-
-        try{
-            openDb().then(db => {
-                db.get("SELECT * FROM Usuarios WHERE password LIKE ?", [email]).then(user => res.json(user))
-            });
-        }catch(error){
-            error.body;
-        }
     }
 
 }
@@ -226,8 +211,14 @@ export async function loginUser(req, res) {
             const password = passwordTrim;
             openDb().then(db => {
                 db.get("SELECT * FROM Usuarios WHERE email=? AND password=?", [email, password])
-                .then(user => res.json(user))
-                .catch(res.json({msg:"Usuário não encontrado"}));
+                .then(user => {
+                    if(!user){
+                        res.json({msg: "Usuário não encontrado."})
+                    }
+
+                    res.json(user);
+
+                });
             });
         }catch(error){
             res.json({msg: "Erro ao buscar usuário"});

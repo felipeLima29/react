@@ -18,6 +18,9 @@ function Insert() {
   const handleInsert = async (e) => {
     e.preventDefault();
 
+    const getToken = localStorage.getItem('token');
+    console.log(getToken)
+    
     setEmailVerify(false); // Falso por padrão
 
     const nomeTrim = nomeUser.trim();
@@ -40,14 +43,15 @@ function Insert() {
 
         const response = await axios.post("http://localhost:3001/verifyEmail", { email });
 
-        if (response.data == "") {
+        if (response.data.msg == "Email não cadastrado.") {
           setEmailVerify(false); // Usuário não existe.
 
           try {
 
             const response = await axios.post("http://localhost:3001/insertUser",
               { nome, email, password },
-              { headers: { 'Content-Type': 'application/json' } });
+              { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` } });
+              
 
 
             //setSucess("Usuário inserido com sucesso.")
