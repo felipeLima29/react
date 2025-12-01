@@ -65,19 +65,25 @@ function UpdateUser() {
         const nomeTrim = nome.trim();
         const emailTrim = email.trim();
         const passwordTrim = password.trim();
+        let getToken = localStorage.getItem('token');
 
         if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
             toast.error('Preencha todos os campos.');
-        }else if(passwordTrim.length<8){
+        } else if (passwordTrim.length < 8) {
             toast.error('A senha deve conter pelo menos 8 dígitos.')
         }
-         else {
+        else {
 
             try {
                 nome = nomeTrim;
                 email = emailTrim;
                 password = passwordTrim;
-                const response = await axios.put('http://localhost:3001/updateUser', { id, nome, email, password });
+
+                const response = await axios.put('http://localhost:3001/updateUser',
+                    { id, nome, email, password },
+                    {
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` }
+                    });
 
                 console.log(response.data);
                 toast.success("Usuário atualizado com sucesso!");
@@ -102,7 +108,7 @@ function UpdateUser() {
                 <form>
 
                     <h1>Atualização de dados dos usuários</h1>
-                    <input type="number" placeholder="Digite um id" onChange={ HandleChange } defaultValue={idValue} required />
+                    <input type="number" placeholder="Digite um id" onChange={HandleChange} defaultValue={idValue} required />
 
                     <button type="button" onClick={() => { listUser(idValue) }}>Procurar</button>
 

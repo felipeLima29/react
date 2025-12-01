@@ -57,12 +57,12 @@ function Select() {
                 toast.error('Erro ao deletar usuário.');
             }
         }
-        listUsers();
+        
     };
 
     useEffect(() => {
         listUsers();
-    }, []);
+    });
 
     return (
 
