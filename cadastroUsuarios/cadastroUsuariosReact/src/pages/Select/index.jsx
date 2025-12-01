@@ -58,11 +58,13 @@ function Select() {
             }
         }
         
+        listUsers();
+        
     };
 
     useEffect(() => {
         listUsers();
-    });
+    }, []);
 
     return (
 
