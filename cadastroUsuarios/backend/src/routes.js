@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/', (req, res)=>{
     res.json({
-        msg: "Api atualizadaaaa."
+        msg: "Api atualizada."
     })
 })
 
