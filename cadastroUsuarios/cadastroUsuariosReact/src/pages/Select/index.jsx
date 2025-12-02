@@ -50,16 +50,18 @@ function Select() {
             console.log(error);
 
             if (!error.response) {
-                toast.error('Erro ao acessar o servidor.');
+                toast.error("Erro ao acessar servidor.")
+            } else if (error.response?.status == 401) {
+                toast.error("Token inválido! Faça login novamente.")
             } else if (!id) {
                 toast.error('Id vazio.');
             } else {
-                toast.error('Erro ao deletar usuário.');
+                toast.error("Erro inesperado")
             }
         }
-        
+
         listUsers();
-        
+
     };
 
     useEffect(() => {

@@ -90,10 +90,11 @@ function UpdateUser() {
         }
         else {
 
+
+            nome = nomeTrim;
+            email = emailTrim;
+            password = passwordTrim;
             try {
-                nome = nomeTrim;
-                email = emailTrim;
-                password = passwordTrim;
 
                 const response = await axios.put('http://localhost:3001/updateUser',
                     { id, nome, email, password },
@@ -105,7 +106,13 @@ function UpdateUser() {
                 toast.success("Usuário atualizado com sucesso!");
 
             } catch (error) {
-                error.body
+                if (!error.response) {
+                    toast.error("Erro ao acessar servidor.")
+                } else if (error.response?.status == 401) {
+                    toast.error("Token inválido! Faça login novamente.")
+                } else {
+                    toast.error("Erro inesperado")
+                }
             }
 
         }

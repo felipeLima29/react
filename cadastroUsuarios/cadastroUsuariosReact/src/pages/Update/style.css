@@ -10,7 +10,6 @@
     align-items: center;
 }
 
-
 .form-update {
     flex-direction: column;
     display: flex;
@@ -57,7 +56,6 @@
         outline: none;
     }
 }
-
 
 .divPasswordUpdate {
     align-items: center;
