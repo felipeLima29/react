@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
 import UserHome from "./pages/UserHome";
+import ForgetPassword from "./pages/ForgetPassword";
 
 export default function AppRoutes() {
        return (
@@ -26,6 +27,8 @@ export default function AppRoutes() {
                                    element={<UpdateUser />} />
                             <Route path="/select"
                                    element={<Select />} />
+                            <Route path="/forgetPassword" 
+                                   element={<ForgetPassword />}/>
 
                      </Routes>
               </div>

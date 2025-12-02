@@ -125,6 +125,8 @@ function Login() {
 
 
                     <button type="button" onClick={handleLogin}>Entrar</button>
+
+                    <p id="forgetPassword">Esqueceu a senha? <Link id="linkForgetPassword" to="/forgetPassword">Clique aqui</Link> </p>
                 </form>
 
             </div>

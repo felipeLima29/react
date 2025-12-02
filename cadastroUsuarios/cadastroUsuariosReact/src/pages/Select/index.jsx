@@ -47,8 +47,6 @@ function Select() {
             console.log(response.data);
             toast.success('Usuário deletado com sucesso.');
         } catch (error) {
-            console.log(error);
-
             if (!error.response) {
                 toast.error("Erro ao acessar servidor.")
             } else if (error.response?.status == 401) {

@@ -15,3 +15,11 @@
     left: 10px;
     transform: translateX(1500%);
 }
+
+#forgetPassword {
+    color: #ffffff;
+}
+#linkForgetPassword {
+    color: #ADD8E6;
+    font-weight: bold;
+}
