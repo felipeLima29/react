@@ -13,9 +13,20 @@ export async function getToken(req, res) {
 
         const db = await openDb();
         const user = await db.get("SELECT * FROM Usuarios WHERE email=? AND password=?", [data.email, data.password]);
+        const admin = await db.get("SELECT * FROM Administradores WHERE email=? AND password=?", [data.email, data.password]);
 
         if (!user) {
-            res.json({ msg: "Usuário não encontrado." })
+
+            if (!admin) {
+                res.json({ msg: "Usuário não encontrado." })
+            } else {
+                const token = jwt.sign({ email: admin.email, password: admin.password },
+                    secretKey,
+                    { expiresIn: '1h' }
+                );
+
+                res.json(token);
+            }
         }
 
         const token = jwt.sign({ email: user.email, password: user.password },

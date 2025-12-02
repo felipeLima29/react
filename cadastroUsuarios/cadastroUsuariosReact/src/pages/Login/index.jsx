@@ -53,8 +53,16 @@ function Login() {
                             console.log("administrador não encontrado.")
                             toast.error('Usuário não encontrado.');
                         } else {
-                            navigate('/home');
-                            toast.success('Login realizado com sucesso.');
+
+                            try {
+                                const token = await axios.post('http://localhost:3001/getToken', { email, password });
+                                localStorage.setItem('token', token.data)
+                                toast.success('Login realizado com sucesso.');
+                                console.log(token);
+                                navigate('/home');
+                            } catch (error) {
+                                toast.error("Erro ao acessar o servidor.")
+                            }
                         }
 
                     } catch (error) {
@@ -109,7 +117,7 @@ function Login() {
                             placeholder="Digite sua senha"
                             className="inputPassword"
                             onChange={(e) => setPassword(e.target.value)}
-                            
+
                         />
                         <img className="imgPassword" onClick={toggleShow} src={eyeClosed} alt="Olho fechado" />
 
