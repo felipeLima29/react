@@ -1,4 +1,4 @@
-.divButton{
+.divButton {
     align-items: center;
     padding: 10px;
 }
@@ -11,7 +11,7 @@
 }
 
 
-.form-update{
+.form-update {
     flex-direction: column;
     display: flex;
     align-items: center;
@@ -40,9 +40,11 @@
         color: #FFE4C4;
         font-size: 15px;
     }
+
     & button:hover {
         opacity: 0.8;
     }
+
     & .input-update {
         border: 1px solid #48456C;
         border-radius: 30px;
@@ -54,4 +56,24 @@
         padding-left: 10px;
         outline: none;
     }
+}
+
+
+.divPasswordUpdate {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 90%;
+}
+
+.inputPasswordUpdate {
+    width: 100%;
+}
+
+.imgPasswordUpdate {
+    position: absolute;
+    top: 30%;
+    left: 10px;
+    transform: translateX(1350%);
 }

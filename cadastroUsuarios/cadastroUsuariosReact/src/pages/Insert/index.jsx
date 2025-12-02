@@ -61,8 +61,6 @@ function Insert() {
           const response = await axios.post("http://localhost:3001/verifyEmail",
             { email },
             { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` } });
-          
-          
 
           if (response.data.msg == "Email não cadastrado.") {
             setEmailVerify(false); // Usuário não existe.

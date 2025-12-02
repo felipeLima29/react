@@ -1,5 +1,7 @@
 import axios from "axios"
 import Back from '../../assets/back.png'
+import eyeClosed from '../../assets/iconEyeClosed.svg';
+import eyeOpen from '../../assets/iconEyeOpen.svg';
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -13,6 +15,20 @@ function UpdateUser() {
 
     const [idValue, setIdValue] = useState(userId);
     const [user, setUser] = useState([]);
+
+    const toggleShow = () => {
+        const input = document.querySelector(".inputPasswordUpdate");
+        const img = document.querySelector(".imgPasswordUpdate");
+
+        if (input.type == "password") {
+            input.type = "text";
+            img.src = eyeOpen;
+        } else if (input.type == "text") {
+            input.type = "password";
+            img.src = eyeClosed;
+        }
+
+    }
 
     const HandleChange = async (event) => {
         setIdValue(event.target.value);
@@ -139,11 +155,17 @@ function UpdateUser() {
                             required />
 
                         <p>Senha:</p>
-                        <input className="input-update"
-                            type="text"
-                            value={userSelected.password}
-                            onChange={(e) => updateField(userSelected.id, "password", e.target.value)}
-                            required />
+                        <div className="divPasswordUpdate">
+
+                            <input className="inputPasswordUpdate"
+                                type="password"
+                                value={userSelected.password}
+                                onChange={(e) => updateField(userSelected.id, "password", e.target.value)}
+                                required
+                            />
+                            <img className="imgPasswordUpdate" onClick={toggleShow} src={eyeClosed} alt="Olho fechado" />
+
+                        </div>
 
                         <button
                             type="button"
