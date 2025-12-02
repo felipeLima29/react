@@ -1,16 +1,15 @@
 import { openDb } from "../openDB.js";
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 export async function createTable() {
-    const nomeAdmin = "admin";
-    const emailAdmin = process.env.EMAIL_ADMIN;
-    const passwordAdmin = process.env.PASSWORD_ADMIN;
     
+
     openDb().then(db => {
         db.exec('CREATE TABLE IF NOT EXISTS Usuarios (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
         db.exec('CREATE TABLE IF NOT EXISTS Administradores (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
-        db.exec("INSERT INTO Administradores (nome, email, password) VALUES (?, ?, ?) ", [nomeAdmin, emailAdmin, passwordAdmin]);
-    })
+    });
 }
 
 export async function insertUser(req, res) {
@@ -92,7 +91,7 @@ export async function deleteUser(req, res) {
         } else {
             try {
                 db.run("DELETE FROM Usuarios WHERE id=?", [id])
-                    .then(response => res.json({msg: "Foi."}));
+                    .then(response => res.json({ msg: "Foi." }));
             } catch (res) {
                 res.code(400);
                 res.json({
@@ -228,7 +227,6 @@ export async function loginUser(req, res) {
                         }
 
                         res.json(user);
-
                     });
             });
         } catch (error) {

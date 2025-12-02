@@ -3,6 +3,7 @@ import router from './routes.js';
 import cors from 'cors';
 import { openDb } from './openDB.js';
 import { createTable } from './controler/Users.js';
+import { createTableAdmin } from './controler/admin.js';
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,8 @@ app.use(cors({
 }));
 app.use(router);
 
+createTable();
+createTableAdmin();
 
 app.get('/', (req, res) => { res.json("ola") });
 

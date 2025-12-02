@@ -6,6 +6,7 @@ import Select from "./pages/Select";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
+import UserHome from "./pages/UserHome";
 
 export default function AppRoutes() {
        return (
@@ -17,6 +18,8 @@ export default function AppRoutes() {
                                    element={<Login />} />
                             <Route path="/home"
                                    element={<Home />} />
+                            <Route path="/userHome"
+                                   element={<UserHome />}/>
                             <Route path="/insert"
                                    element={<Insert />} />
                             <Route path="/update"

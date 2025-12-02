@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { insertUser, selectAllUsers, deleteUser, updateUser, selectUser, verifyEmail, loginUser } from "./controler/Users.js";
 import { getToken, middleware } from "./controler/token.js";
+import { loginAdmin } from "./controler/admin.js";
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.put('/updateUser', updateUser);
 router.post('/listUser', selectUser);
 router.post('/verifyEmail', middleware, verifyEmail);
 router.post('/loginUser', loginUser);
+router.post('/loginAdmin', loginAdmin);
 router.post('/getToken', getToken);
 export default router;

@@ -24,19 +24,33 @@ function Login() {
             try {
 
                 const response = await axios.post('http://localhost:3001/loginUser', { email, password });
-
                 console.log(response.data);
+
                 if (response.data.msg == "Usuário não encontrado.") {
 
-                    toast.error('Usuário não encontrado');
+                    console.log("Usuário não encontrado, verificando se é um administrador.")
+
+                    try {
+                        const response = await axios.post('http://localhost:3001/loginAdmin', { email, password });
+                        if (response.data.msg == 'Usuário não encontrado.') {
+                            console.log("administrador não encontrado.")
+                            toast.error('Usuário não encontrado.');
+                        } else {
+                            navigate('/home');
+                            toast.success('Login realizado com sucesso.');
+                        }
+
+                    } catch (error) {
+                        error.body;
+                    }
 
                 } else {
 
                     try {
 
-                        const token = await axios.post('http://localhost:3001/getToken', {email, password});
+                        const token = await axios.post('http://localhost:3001/getToken', { email, password });
                         localStorage.setItem('token', token.data)
-                        navigate('/home');
+                        navigate('/userHome');
 
 
                         toast.success('Login realizado com sucesso.');
@@ -53,6 +67,7 @@ function Login() {
             } catch (error) {
                 error.body;
             }
+
 
         }
 
