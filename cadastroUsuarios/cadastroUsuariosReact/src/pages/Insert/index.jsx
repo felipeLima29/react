@@ -1,6 +1,8 @@
 import axios from 'axios';
 import './style.css';
 import Back from '../../assets/back.png';
+import eyeClosed from '../../assets/iconEyeClosed.svg';
+import eyeOpen from '../../assets/iconEyeOpen.svg';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
@@ -14,12 +16,25 @@ function Insert() {
   const [nomeUser, setName] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
 
+  const toggleShow = () => {
+    const input = document.querySelector(".inputPassword");
+    const img = document.querySelector(".imgPassword");
+
+    if (input.type == "password") {
+      input.type = "text";
+      img.src = eyeOpen;
+    } else if (input.type == "text") {
+      input.type = "password";
+      img.src = eyeClosed;
+    }
+
+  }
 
   const handleInsert = async (e) => {
     e.preventDefault();
 
     const getToken = localStorage.getItem('token');
-    console.log(getToken)
+    console.log(getToken);
 
     setEmailVerify(false); // Falso por padrão
 
@@ -33,21 +48,21 @@ function Insert() {
       toast.error('A senha deve conter pelo menos 8 caracteres.');
     } else {
 
+      const nome = nomeTrim;
+      const email = emailTrim;
+      const password = passwordTrim;
 
-      try {
+      if (!getToken || getToken == null || getToken == "") {
+        toast.error("Token inválido ou expirado.");
+      } else {
 
-
-        const nome = nomeTrim;
-        const email = emailTrim;
-        const password = passwordTrim;
-
-        if (!getToken) {
-          toast.error("Token inválido ou expirado.")
-        } else {
+        try {
 
           const response = await axios.post("http://localhost:3001/verifyEmail",
             { email },
             { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` } });
+          
+          
 
           if (response.data.msg == "Email não cadastrado.") {
             setEmailVerify(false); // Usuário não existe.
@@ -69,7 +84,8 @@ function Insert() {
 
               if (!error?.response) {
                 toast.error("Erro ao acessar o servidor.");
-                console.log("Erro ao acessar o servidor.")
+                console.log("Erro ao acessar o servidor.");
+
               } else {
                 toast.error("Erro ao inserir usuário.");
                 console.log("Erro ao inserir usuário.")
@@ -79,7 +95,6 @@ function Insert() {
 
           } else {
 
-
             setEmailVerify(true); // Usuário já existe.
 
             toast.error("Email ja cadastrado.");
@@ -87,13 +102,19 @@ function Insert() {
 
           }
 
+        } catch (error) {
+          if(!error.response){
+            toast.error("Erro ao acessar servidor.")
+          }else if(error.response?.status== 401){
+            toast.error("Token inválido! Faça login novamente.")
+          }else{
+            toast.error("Erro inesperado")
+          }
+          
         }
-      } catch (error) {
-
-        console.log(error.body);
-        toast.error("Erro ao acessar o servidor");
 
       }
+
 
     }
 
@@ -112,7 +133,19 @@ function Insert() {
           <h1>Cadastro de Usuários</h1>
           <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
           <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-          <input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)} />
+
+          <div className="divPassword">
+
+            <input type="password"
+              placeholder="Senha"
+              className="inputPassword"
+              onChange={(e) => setPassword(e.target.value)}
+
+            />
+            <img className="imgPassword" onClick={toggleShow} src={eyeClosed} alt="Olho fechado" />
+
+          </div>
+
           <button type='button' onClick={handleInsert}>Cadastrar</button>
         </form>
 

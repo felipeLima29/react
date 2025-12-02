@@ -6,7 +6,6 @@ dotenv.config();
 
 
 export async function getToken(req, res) {
-
     const secretKey = process.env.JWT_SECRET;
     const data = req.body;
 
@@ -29,8 +28,6 @@ export async function getToken(req, res) {
     } catch (error) {
         error.body;
     }
-
-
 }
 
 export async function middleware(req, res, next) {

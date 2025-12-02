@@ -1,0 +1,17 @@
+.divPassword {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.inputPassword {
+    width: 100%;
+}
+
+.imgPassword {
+    position: absolute;
+    top: 30%;
+    left: 10px;
+    transform: translateX(1500%);
+}

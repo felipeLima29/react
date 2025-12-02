@@ -13,9 +13,7 @@ function UserHome() {
 
                 <h1>Seja bem vindo!</h1>
 
-                <Link to="/insert"><button id="navInsert"> Inserir Usuários </button></Link>
-                <Link to="/select"><button id="navSelect"> Visualizar Usuários </button></Link>
-                <Link to="/update"><button id="navUpdate"> Atualizar Dados </button></Link>
+                <Link to="/select"><button id="navSelect">Visualizar Usuários</button></Link>
             </div>
         </div>
     )
