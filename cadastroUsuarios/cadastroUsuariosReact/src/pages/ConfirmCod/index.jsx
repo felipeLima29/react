@@ -1,16 +1,22 @@
 import { useState } from "react";
 import Back from '../../assets/back.png'
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function ConfirmCod() {
 
-    const [cod, setCod] = useState('');
+    const [code, setCode] = useState('');
+    const navigate = useNavigate();
 
-    const verifyCod = async (cod) =>{
+    const verifyCod = async () =>{
         const getCod = localStorage.getItem('COD');
 
-        console.log(getCod);
+        if(code !== getCod){
+            toast.error('Código inválido, tente novamente.');
+        }else{
+            toast.success('Código válido.');
+            navigate('/resetPassword');
+        }
     }
 
 
@@ -23,10 +29,10 @@ function ConfirmCod() {
             <div className='container'>
                 <form>
                     <h1>Digite o código</h1>
-                    <input type="text" placeholder='Código' maxLength={6} onChange={(e) => setCod(e.target.value)} />
+                    <input type="number" placeholder='Código' maxLength={6} onChange={(e) => setCode(e.target.value)} />
 
                     <button type='button' onClick={() => {
-                        verifyCod(cod)
+                        verifyCod()
                     }}>Verificar</button>
                 </form>
             </div>

@@ -252,7 +252,10 @@ export async function forgetPassword(req, res) {
         
         try {
             await sendResetPassword(email, cod);
-            res.json({msg: "Código de recuperação enviado com sucesso."})
+            res.json({
+                msg: "Código de recuperação enviado com sucesso.",
+                code: cod
+            });
         }catch(error){
             res.status(500);
             res.json({msg: "Ocorreu algum erro inesperado."});
@@ -265,6 +268,5 @@ export async function forgetPassword(req, res) {
 
 export async function resetPassword(req, res) {
     const passwordUser = req.body.password;
-
 
 }

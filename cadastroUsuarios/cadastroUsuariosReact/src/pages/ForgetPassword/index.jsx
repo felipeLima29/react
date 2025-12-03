@@ -34,7 +34,9 @@ function ForgetPassword() {
                 if(response.data.msg == "Código de recuperação enviado com sucesso."){
                     toast.success("Código enviado com sucesso.");
                 }
-                navigate('/confirmCod');
+                const code = response.data.code;
+                localStorage.setItem('COD', code);
+                //navigate('/confirmCod');
             } catch (error) {
                 console.log("erro");
             }
