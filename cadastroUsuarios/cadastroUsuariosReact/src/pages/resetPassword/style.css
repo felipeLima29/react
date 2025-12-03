@@ -1,7 +1,7 @@
 .divPasswordConfirm {
     align-items: center;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     position: relative;
 }
 
@@ -10,10 +10,7 @@
 }
 
 .imgPasswordConfirm {
-    position: fixed;
-    top: 46.5%;
-    transform: translateX(-150%);
-    
+    transform: translateX(1550%) translateY(-140%);
 }
 
 label{
