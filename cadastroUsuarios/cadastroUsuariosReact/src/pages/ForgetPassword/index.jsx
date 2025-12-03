@@ -36,7 +36,7 @@ function ForgetPassword() {
                 }
                 const code = response.data.code;
                 localStorage.setItem('COD', code);
-                //navigate('/confirmCod');
+                navigate('/confirmCod');
             } catch (error) {
                 console.log("erro");
             }

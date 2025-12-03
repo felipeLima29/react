@@ -15,7 +15,7 @@ function ConfirmCod() {
             toast.error('Código inválido, tente novamente.');
         }else{
             toast.success('Código válido.');
-            navigate('/resetPassword');
+            navigate('/ResetPassword');
         }
     }
 

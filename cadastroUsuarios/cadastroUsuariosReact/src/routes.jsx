@@ -38,11 +38,11 @@ export default function AppRoutes() {
                             <Route path="/forgetPassword"
                                    element={<ForgetPassword />}
                             />
-                            <Route path="/resetPassword"
-                                   element={<ResetPassword />}
-                            />
                             <Route path="/confirmCod"
                                    element={<ConfirmCod />}
+                            />
+                            <Route path="/resetPassword"
+                                   element={<ResetPassword />}
                             />
 
                      </Routes>

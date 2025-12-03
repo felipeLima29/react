@@ -247,21 +247,40 @@ export async function forgetPassword(req, res) {
         res.json({ msg: "Digite algo nos campos de email e password." });
     } else {
         let email = emailTrim;
-        let cod = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
-        cod = cod.toString();
-        
+
         try {
-            await sendResetPassword(email, cod);
-            res.json({
-                msg: "Código de recuperação enviado com sucesso.",
-                code: cod
+            openDb().then(db => {
+                db.get('SELECT * FROM Usuarios WHERE email=?', [email])
+                    .then(result => {
+                        if (!result) {
+                            res.json({ msg: "Este email não está cadastrado no sistema." });
+                        } else {
+                            let cod = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+                            cod = cod.toString();
+
+                            const result = async () => {
+
+                                try {
+                                    await sendResetPassword(email, cod);
+                                    res.json({
+                                        msg: "Código de recuperação enviado com sucesso.",
+                                        code: cod
+                                    });
+                                } catch (error) {
+                                    res.status(500);
+                                    res.json({ msg: "Ocorreu algum erro inesperado." });
+                                }
+                            }
+                            result();
+                            
+                        }
+                    });
             });
-        }catch(error){
-            res.status(500);
-            res.json({msg: "Ocorreu algum erro inesperado."});
+        } catch (error) {
+            error.body;
         }
-        
-        
+
+
     }
 
 }
