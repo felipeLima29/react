@@ -11,8 +11,29 @@ import './style.css';
 function ResetPassword() {
 
     const [password, setPassword] = useState('');
-    const [PasswordConfirm, setPasswordConfirm] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
 
+    const changePassword = async () => {
+        const passwordTrim = password.trim();
+        const passwordConfirmTrim = passwordConfirm.trim();
+
+        if(passwordTrim !== passwordConfirmTrim){
+            toast.error('As senhas não coincidem.')
+        }else if(passwordTrim<8 || passwordConfirmTrim<8){
+            toast.error('A senha deve conter pelo menos 8 dígitos.')
+        }else{
+            const password = passwordTrim;
+            const passwordConfirm = passwordConfirmTrim;
+            const idUser = localStorage.getItem('IDUSER');
+
+            try{
+                const response = await axios.post('http://localhost:3001/resetPassword', {password, passwordConfirm, idUser});
+                console.log(response.data.msg);x    
+            }catch(error){
+                error.body;
+            }
+        }
+    }
 
     const HandleChange = async (event) => {
         setPassword(event.target.value);
@@ -74,13 +95,13 @@ function ResetPassword() {
                         <input type="password"
                             placeholder="Senha"
                             className="inputPasswordConfirm"
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => setPasswordConfirm(e.target.value)}
 
                         />
                         <img className="imgPasswordConfirm" onClick={toggleShowConfirm} src={eyeClosed} alt="Olho fechado" />
                     </div>
 
-                    <button type="button" >Atualizar</button>
+                    <button type="button" onClick={changePassword}>Atualizar</button>
 
                 </form>
             </div>
