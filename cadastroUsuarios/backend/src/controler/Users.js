@@ -1,10 +1,11 @@
 import { openDb } from "../openDB.js";
 import dotenv from 'dotenv';
+import sendResetPassword from "../services/resetEmailService.js";
 
 dotenv.config();
 
 export async function createTable() {
-    
+
 
     openDb().then(db => {
         db.exec('CREATE TABLE IF NOT EXISTS Usuarios (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
@@ -209,7 +210,6 @@ export async function loginUser(req, res) {
 
     if (emailTrim == "" || passwordTrim == "") {
         res.status(400)
-
         res.json({ msg: "Digite algo nos campos de email e password." });
     } else if (passwordTrim.length < 8) {
         res.status(400);
@@ -235,5 +235,31 @@ export async function loginUser(req, res) {
 
     }
 
+
+}
+
+export async function resetPassword(req, res) {
+    const user = req.body;
+
+    let emailTrim = user.email.trim();
+
+    if (emailTrim == '' || emailTrim == null) {
+        res.status(400)
+        res.json({ msg: "Digite algo nos campos de email e password." });
+    } else {
+        let email = emailTrim;
+        let cod = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+        cod = cod.toString();
+
+        try {
+            sendResetPassword(email, cod);
+            res.json({msg: "Código de recuperação enviado com sucesso."})
+        }catch(error){
+            res.status(500);
+            res.json({msg: "Ocorreu algum erro inesperado."});
+        }
+        
+        
+    }
 
 }

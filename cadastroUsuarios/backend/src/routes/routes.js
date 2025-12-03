@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { insertUser, selectAllUsers, deleteUser, updateUser, selectUser, verifyEmail, loginUser } from "./controler/Users.js";
-import { getToken, middleware } from "./controler/token.js";
-import { loginAdmin } from "./controler/admin.js";
+import { insertUser, selectAllUsers, deleteUser, updateUser, selectUser, verifyEmail, loginUser, resetPassword } from "../controler/Users.js";
+import { getToken, middleware } from "../controler/token.js";
+import { loginAdmin } from "../controler/admin.js";
 
 const router = Router();
 
@@ -20,4 +20,6 @@ router.post('/verifyEmail', middleware, verifyEmail);
 router.post('/loginUser', loginUser);
 router.post('/loginAdmin', loginAdmin);
 router.post('/getToken', getToken);
+router.post('/resetPassword', resetPassword);
+
 export default router;

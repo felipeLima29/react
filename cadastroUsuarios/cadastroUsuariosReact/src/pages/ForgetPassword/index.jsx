@@ -11,6 +11,10 @@ function ForgetPassword() {
     const [emailUser, setEmail] = useState('');
 
 
+    const resetPassword = async () => {
+        //toast.info("oii");
+        console.log(emailUser);
+    }
 
     return (
 
@@ -24,7 +28,7 @@ function ForgetPassword() {
                     <h1>Cadastro de Usuários</h1>
                     <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
 
-                    <button type='button'>Cadastrar</button>
+                    <button type='button' onClick={resetPassword}>Recuperar</button>
                 </form>
 
             </div>
