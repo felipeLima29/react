@@ -1,0 +1,22 @@
+.divPasswordConfirm {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.inputPasswordConfirm {
+    width: 100%;
+}
+
+.imgPasswordConfirm {
+    position: fixed;
+    top: 46.5%;
+    transform: translateX(-150%);
+    
+}
+
+label{
+    color: white;
+    font-weight: bold;
+}

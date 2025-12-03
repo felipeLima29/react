@@ -24,7 +24,6 @@ async function sendResetPassword(to, cod) {
             <p>${cod}</p>
         `, // HTML body
     });
-    
 };
 
 export default sendResetPassword;

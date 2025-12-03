@@ -235,10 +235,9 @@ export async function loginUser(req, res) {
 
     }
 
-
 }
 
-export async function resetPassword(req, res) {
+export async function forgetPassword(req, res) {
     const user = req.body;
 
     let emailTrim = user.email.trim();
@@ -250,9 +249,9 @@ export async function resetPassword(req, res) {
         let email = emailTrim;
         let cod = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
         cod = cod.toString();
-
+        
         try {
-            sendResetPassword(email, cod);
+            await sendResetPassword(email, cod);
             res.json({msg: "Código de recuperação enviado com sucesso."})
         }catch(error){
             res.status(500);
@@ -261,5 +260,11 @@ export async function resetPassword(req, res) {
         
         
     }
+
+}
+
+export async function resetPassword(req, res) {
+    const passwordUser = req.body.password;
+
 
 }

@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
 import UserHome from "./pages/UserHome";
 import ForgetPassword from "./pages/ForgetPassword";
+import ResetPassword from "./pages/resetPassword";
+import ConfirmCod from "./pages/ConfirmCod";
 
 export default function AppRoutes() {
        return (
@@ -16,19 +18,32 @@ export default function AppRoutes() {
                      <Routes>
 
                             <Route path="/"
-                                   element={<Login />} />
+                                   element={<Login />} 
+                            />
                             <Route path="/home"
-                                   element={<Home />} />
+                                   element={<Home />} 
+                            />
                             <Route path="/userHome"
-                                   element={<UserHome />}/>
+                                   element={<UserHome />} 
+                            />
                             <Route path="/insert"
-                                   element={<Insert />} />
+                                   element={<Insert />} 
+                            />
                             <Route path="/update"
-                                   element={<UpdateUser />} />
+                                   element={<UpdateUser />} 
+                            />
                             <Route path="/select"
-                                   element={<Select />} />
-                            <Route path="/forgetPassword" 
-                                   element={<ForgetPassword />}/>
+                                   element={<Select />}
+                            />
+                            <Route path="/forgetPassword"
+                                   element={<ForgetPassword />}
+                            />
+                            <Route path="/resetPassword"
+                                   element={<ResetPassword />}
+                            />
+                            <Route path="/confirmCod"
+                                   element={<ConfirmCod />}
+                            />
 
                      </Routes>
               </div>
