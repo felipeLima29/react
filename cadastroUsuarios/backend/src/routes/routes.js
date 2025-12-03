@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { insertUser, selectAllUsers, deleteUser, updateUser, selectUser, verifyEmail, loginUser, forgetPassword } from "../controler/Users.js";
+import { insertUser, selectAllUsers, deleteUser, updateUser, selectUser, verifyEmail, loginUser, forgetPassword, resetPassword } from "../controler/Users.js";
 import { getToken, middleware } from "../controler/token.js";
 import { loginAdmin } from "../controler/admin.js";
 
@@ -21,5 +21,6 @@ router.post('/loginUser', loginUser);
 router.post('/loginAdmin', loginAdmin);
 router.post('/getToken', getToken);
 router.post('/forgetPassword', forgetPassword);
+router.post('/resetPassword', resetPassword);
 
 export default router;

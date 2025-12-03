@@ -92,7 +92,7 @@ export async function deleteUser(req, res) {
         } else {
             try {
                 db.run("DELETE FROM Usuarios WHERE id=?", [id])
-                    .then(response => res.json({ msg: "Foi." }));
+                    .then(response => res.json({ msg: "Usuário deletado com sucesso." }));
             } catch (res) {
                 res.code(400);
                 res.json({
@@ -243,7 +243,7 @@ export async function forgetPassword(req, res) {
     let emailTrim = user.email.trim();
 
     if (emailTrim == '' || emailTrim == null) {
-        res.status(400)
+        res.status(400);
         res.json({ msg: "Digite algo nos campos de email e password." });
     } else {
         let email = emailTrim;
@@ -256,23 +256,25 @@ export async function forgetPassword(req, res) {
                             res.json({ msg: "Este email não está cadastrado no sistema." });
                         } else {
                             let cod = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+                            const id = result.id;
                             cod = cod.toString();
 
-                            const result = async () => {
+                            const sendEmail = async () => {
 
                                 try {
                                     await sendResetPassword(email, cod);
                                     res.json({
                                         msg: "Código de recuperação enviado com sucesso.",
-                                        code: cod
+                                        code: cod,
+                                        idUser: id
                                     });
                                 } catch (error) {
                                     res.status(500);
                                     res.json({ msg: "Ocorreu algum erro inesperado." });
                                 }
                             }
-                            result();
-                            
+                            sendEmail();
+
                         }
                     });
             });
@@ -286,6 +288,39 @@ export async function forgetPassword(req, res) {
 }
 
 export async function resetPassword(req, res) {
-    const passwordUser = req.body.password;
+    const data = req.body;
 
+    let passwordUserTrim = data.passwordUser.trim();
+    let passwordUserConfirmTrim = data.passwordUserConfirm.trim();
+    let idUserString = data.idUser.toString();
+    let idUserTrim = idUserString.trim();
+
+    if (passwordUserTrim == "" || passwordUserTrim == null || passwordUserConfirmTrim == "" || passwordUserConfirmTrim == null || idUserTrim == "" || idUserTrim == null) {
+        res.status(400);
+        res.json({ msg: "Preencha todos os campos." });
+    } else if (passwordUserTrim !== passwordUserConfirmTrim) {
+        res.status(400);
+        res.json({ msg: "As senhas não coincidem." });
+    } else {
+        let password = passwordUserTrim;
+        let passwordConfirm = passwordUserTrim;
+        let id = idUserTrim;
+
+        try {
+            openDb().then(db => {
+                db.get('SELECT * FROM Usuarios WHERE id=?', [id])
+                    .then(result => {
+                        if (!result) {
+                            res.json({ msg: "Este id não está cadastrado no sistema." });
+                        }else{
+                            db.run("UPDATE Usuarios set password=? WHERE id=?", [password, id]);
+                            res.json({msg: "Senha atualizada com sucesso."})
+                        }
+                    });
+
+            });
+        } catch (error) {
+            error.body;
+        }
+    }
 }

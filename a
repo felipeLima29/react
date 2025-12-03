@@ -1,0 +1,245 @@
+[33mcommit 517446912c5e78838f898eecdcf84d5f281b40d7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Dec 3 12:51:08 2025 -0300
+
+    Montando fluxo de recuperar senha.
+
+[33mcommit b0f257cb1b79f3657903db32d74ad4a1f65c4d22[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Dec 3 12:22:17 2025 -0300
+
+    Concertando posições dos olhos de ver senha.
+
+[33mcommit 204eaf2520ee8da232b25480ec577ac952a923da[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Dec 3 12:05:12 2025 -0300
+
+    Conferindo se os códigos de verificação são iguais.
+
+[33mcommit 39170b0b04c7a278bc9fbcceb0dbec3bb1c3b09b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Dec 3 11:25:37 2025 -0300
+
+    Código para recuperar senha.
+
+[33mcommit d078ce8d4b9721a7e2a8997da880ec8470b93b4a[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Dec 3 09:42:02 2025 -0300
+
+    ENviando código para recuperar senha.
+
+[33mcommit 4710e3371d1f5f0751316b1be69a54dbf592601c[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Dec 2 18:00:22 2025 -0300
+
+    commit
+
+[33mcommit 30d0b7a86cc86813fad90af1cf18ab90ab334db1[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Dec 2 17:37:43 2025 -0300
+
+    Adicionando verificação de token em outros métodos
+
+[33mcommit 84df89348ab592c34e84e2b796fda5853e3123ac[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Dec 2 17:30:22 2025 -0300
+
+    Adicionando função de ver senha
+
+[33mcommit 2e8b71fff157ac2db262fea6a4aa0d5defe5fa2d[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Dec 2 17:10:35 2025 -0300
+
+    Criação de tokens para administradores
+
+[33mcommit 926780e5135761417ee11899a4bcfeaa9cc65eee[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Dec 2 16:58:06 2025 -0300
+
+    Adicionando verificação de token inválido
+
+[33mcommit cce4d8746f162be3180dbc5e914e01eda5daf682[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Dec 2 14:35:41 2025 -0300
+
+    Dividindo user comum e administrador
+
+[33mcommit 383b5f48f33d0b2c21bf644e1a890fcd24cb7bd9[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Mon Dec 1 16:55:52 2025 -0300
+
+    Iniciando login para administradores
+
+[33mcommit 3cd325b67edf9d51141471e1aabed0368957aea3[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Mon Dec 1 16:41:35 2025 -0300
+
+    changes
+
+[33mcommit 7349a866cf8abbf70f5c05fb6d5c3f4a7ce5d664[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Mon Dec 1 16:33:12 2025 -0300
+
+    Adicionando tokens
+
+[33mcommit f89330d0a845b74d0252128b91d4bc5a24b9a32f[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Mon Dec 1 16:26:47 2025 -0300
+
+    Adicionando tokens
+
+[33mcommit 7f953de57288cbf557e926ac726fc8857af317a5[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Mon Dec 1 14:52:57 2025 -0300
+
+    commit
+
+[33mcommit 1dd2e815a39463b8a629f9c846e60baa31c8985e[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Thu Nov 27 16:56:35 2025 -0300
+
+    Iniciando login no backend
+
+[33mcommit f6333df4e1bcda01b56dda640af53ed742dc1481[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Thu Nov 27 16:53:58 2025 -0300
+
+    commit
+
+[33mcommit 3be6e598436aa3dda848f3d20f724a4ac9ffe87f[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Thu Nov 27 15:08:55 2025 -0300
+
+    Iniciando login no backend
+
+[33mcommit 98aded2a8a666835fc9e18a63440d14b3284457c[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Thu Nov 27 14:57:10 2025 -0300
+
+    commit
+
+[33mcommit 651a4c539662707acce09a46524cc8d74ef9ddf8[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Nov 26 17:30:13 2025 -0300
+
+    Adicionando validações.
+
+[33mcommit 71a1c43a8cad04607d82144116c0d9156e83da50[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Nov 26 17:27:35 2025 -0300
+
+    Adicionando validações.
+
+[33mcommit 9a5d9d52c16c43c76849cc86c79e49f5001aa64b[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Nov 26 17:22:31 2025 -0300
+
+    Adicionando validações.
+
+[33mcommit 065111c1e89bf433eab9af8d1859c53511887d53[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Nov 26 17:03:21 2025 -0300
+
+    commit
+
+[33mcommit f5193fa5e757c13e96bc26ef6f5501038fe3fe8a[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Nov 26 16:52:35 2025 -0300
+
+    commit
+
+[33mcommit 1f0a04e4b8ac8e7c4b4b68ff4ce02c7d8a082102[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Nov 26 16:39:48 2025 -0300
+
+    commit
+
+[33mcommit 3aef77b6be2698c91bf06c16c2feead1a1701eac[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Wed Nov 26 16:18:12 2025 -0300
+
+    commit
+
+[33mcommit 2463e198e7b4b480e88e563b65cd82a909ce23fd[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Nov 25 16:57:19 2025 -0300
+
+    commit
+
+[33mcommit 5ce9554f3472dc7bea6699bb3a461e25ece24da8[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Nov 25 16:12:06 2025 -0300
+
+    Tela para visualizar usuários
+
+[33mcommit 25d0b6dbd393e36342190b44669feb1bb9ebf591[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Nov 25 15:42:29 2025 -0300
+
+    Verificando email já existente
+
+[33mcommit cb8268fe9898e620d6cf88aa4104d7e28cea416a[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Mon Nov 24 16:56:09 2025 -0300
+
+    Crud completo
+
+[33mcommit 1e882fa86697c2b06060cd2f13afec7cd5647ea3[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Mon Nov 24 16:53:45 2025 -0300
+
+    Crud completo
+
+[33mcommit 203dc09503db6f8576fb9b96e48ad342f7044214[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Mon Nov 24 16:07:17 2025 -0300
+
+    Enviando dados como parametro
+
+[33mcommit c7a589778876b7d7beeae3891c5df7faff5351cb[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Fri Nov 21 16:54:42 2025 -0300
+
+    Iniciando atualização de usuarios
+
+[33mcommit 92283b8ee378be85d557a71ef4c3a98aaba5287e[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Fri Nov 21 13:11:41 2025 -0300
+
+    Deletando usuário
+
+[33mcommit 63a8a5686627ed2ff81329277c4183f7096e6112[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Nov 18 16:53:26 2025 -0300
+
+    commit
+
+[33mcommit 162afcee650b5e5e3c4abeab4db06cb6e64e07f0[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Tue Nov 18 14:46:28 2025 -0300
+
+    commit
+
+[33mcommit 1925622b6e1c8bfc6d8e2d8761bb30c94a21fd4f[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Mon Nov 17 16:55:39 2025 -0300
+
+    commit
+
+[33mcommit 00ec6a91b06d2626946b4c9e8c3cdd9f2d86e737[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Fri Nov 14 16:51:34 2025 -0300
+
+    commit
+
+[33mcommit 10355ffa26ce821f69c97db5d479a3e9eb7046a1[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Fri Nov 14 15:38:43 2025 -0300
+
+    commit
+
+[33mcommit 44d31c6efb6cebb0f60d12cffbdf0c4085819445[m
+Author: felipe <fl7280460@gmail.com>
+Date:   Fri Nov 14 15:05:30 2025 -0300
+
+    commit

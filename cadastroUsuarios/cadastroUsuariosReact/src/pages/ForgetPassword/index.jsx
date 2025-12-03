@@ -27,17 +27,23 @@ function ForgetPassword() {
             toast.info("Digite um email válido.");
         } else {
             const email = emailTrim;
-            toast.info('Enviando código para seu email...', {autoClose: 3000});
+            toast.info('Tentando enviar código para seu email...', { autoClose: 3000 });
             try {
                 const response = await axios.post('http://localhost:3001/forgetPassword', { email });
 
-                if(response.data.msg == "Código de recuperação enviado com sucesso."){
+                if (response.data.msg == "Este email não está cadastrado no sistema.") {
+                    toast.info("Este email não está cadastrado no sistema.")
+                } else if (response.data.msg == "Código de recuperação enviado com sucesso.") {
                     toast.success("Código enviado com sucesso.");
+                    
+                    const code = response.data.code;
+                    const id = response.data.idUser;
+                    localStorage.setItem('COD', code);
+                    localStorage.setItem('IDUSER', id);
+                    navigate('/confirmCod');
                 }
-                const code = response.data.code;
-                localStorage.setItem('COD', code);
-                navigate('/confirmCod');
             } catch (error) {
+                toast.error("Erro ao acessar servidor.")
                 console.log("erro");
             }
         }

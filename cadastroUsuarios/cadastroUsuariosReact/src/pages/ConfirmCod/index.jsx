@@ -10,6 +10,7 @@ function ConfirmCod() {
 
     const verifyCod = async () =>{
         const getCod = localStorage.getItem('COD');
+        const getIdUser = localStorage.getItem
 
         if(code !== getCod){
             toast.error('Código inválido, tente novamente.');

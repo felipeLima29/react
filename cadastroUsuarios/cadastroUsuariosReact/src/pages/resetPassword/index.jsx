@@ -51,7 +51,7 @@ function ResetPassword() {
     return (
         <div>
             <div className="divButton">
-                <Link to="/home"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
+                <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
             </div>
 
             <div className="div-data">
