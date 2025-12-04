@@ -7,6 +7,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './style.css';
+import InputPassword from "../../components/inputPassword";
 
 function ResetPassword() {
 
@@ -83,25 +84,8 @@ function ResetPassword() {
                     <h1>Atualização de Senha.</h1>
                     
                     <label htmlFor="Password">Insira sua nova senha:</label>
-                    <div className="divPassword">
-                        <input type="password"
-                            placeholder="Senha"
-                            className="inputPassword"
-                            onChange={(e) => setPassword(e.target.value)}
-
-                        />
-                        <img className="imgPassword" onClick={toggleShow} src={eyeClosed} alt="Olho fechado" />
-
-                    </div>
-                    <div className="passwordConfirm">
-                        <input type="password"
-                            placeholder="Senha"
-                            className="inputPasswordConfirm"
-                            onChange={(e) => setPasswordConfirm(e.target.value)}
-
-                        />
-                        <img className="imgPasswordConfirm" onClick={toggleShowConfirm} src={eyeClosed} alt="Olho fechado" />
-                    </div>
+                    <InputPassword onChangePassword={(valor) => setPassword(valor)}/>
+                    <InputPassword onChangePassword={(valor) => setPasswordConfirm(valor)}/>
 
                     <button type="button" onClick={changePassword}>Atualizar</button>
 

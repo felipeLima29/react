@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import InputPassword from '../../components/inputPassword';
 
 
 function Insert() {
@@ -135,17 +136,7 @@ function Insert() {
           <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
           <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
 
-          <div className="divPassword">
-
-            <input type="password"
-              placeholder="Senha"
-              className="inputPassword"
-              onChange={(e) => setPassword(e.target.value)}
-
-            />
-            <img className="imgPassword" onClick={toggleShow} src={eyeClosed} alt="Olho fechado" />
-
-          </div>
+          <InputPassword onChangePassword={(valor) => setPassword(valor)}/>
 
           <button type='button' onClick={handleInsert}>Cadastrar</button>
         </form>
