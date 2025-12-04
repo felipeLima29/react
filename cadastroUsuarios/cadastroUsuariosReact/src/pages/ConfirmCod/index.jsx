@@ -2,6 +2,7 @@ import { useState } from "react";
 import Back from '../../assets/back.png'
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import ButtonBackForgetPassword from "../../components/Buttons/buttonBackForgetPassword";
 
 function ConfirmCod() {
 
@@ -24,9 +25,7 @@ function ConfirmCod() {
 
     return (
         <div>
-            <div className='divButton'>
-                <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
-            </div>
+            <ButtonBackForgetPassword/>
 
             <div className='container'>
                 <form>

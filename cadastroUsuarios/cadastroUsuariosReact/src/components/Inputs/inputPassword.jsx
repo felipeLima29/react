@@ -26,7 +26,7 @@ function InputPassword( {onChangePassword} ) {
                 {isShow && <EyeOff size={18} />}
                 {!isShow && <Eye size={18} />}
             </button>
-
+        
         </div>
     )
 }

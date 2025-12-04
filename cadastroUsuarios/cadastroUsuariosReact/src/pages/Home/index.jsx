@@ -1,3 +1,4 @@
+import ButtonBack from '../../components/Buttons/buttonBack';
 import './style.css'
 import { Link } from "react-router-dom";
 
@@ -5,9 +6,7 @@ function Home() {
 
     return (
         <div>
-            <div className="divButton">
-                <Link to="/"> <button className="navGoBack"> Sair </button> </Link>
-            </div>
+            <ButtonBack/>
             <div className="container">
 
                 <h1>Seja bem vindo ao Gerenciamento de Usuários</h1>

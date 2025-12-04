@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './style.css'
 import { Eye, EyeOff } from "lucide-react";
-import InputPassword from "../../components/inputPassword";
+import InputPassword from "../../components/Inputs/inputPassword";
 
 function Login() {
 

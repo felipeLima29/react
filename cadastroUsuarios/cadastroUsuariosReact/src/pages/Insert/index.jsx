@@ -1,13 +1,13 @@
 import axios from 'axios';
 import './style.css';
-import Back from '../../assets/back.png';
 import eyeClosed from '../../assets/iconEyeClosed.svg';
 import eyeOpen from '../../assets/iconEyeOpen.svg';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import InputPassword from '../../components/inputPassword';
+import InputPassword from '../../components/Inputs/inputPassword';
+import ButtonBackHome from '../../components/Buttons/buttonBackHome';
 
 
 function Insert() {
@@ -16,21 +16,6 @@ function Insert() {
   const [passwordUser, setPassword] = useState('');
   const [nomeUser, setName] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
-
-  const toggleShow = () => {
-    const input = document.querySelector(".inputPassword");
-    const img = document.querySelector(".imgPassword");
-
-    // Torna a senha visível.
-    if (input.type == "password") {
-      input.type = "text";
-      img.src = eyeOpen;
-    } else if (input.type == "text") {
-      input.type = "password";
-      img.src = eyeClosed;
-    }
-
-  }
 
   const handleInsert = async (e) => {
     e.preventDefault();
@@ -126,9 +111,8 @@ function Insert() {
   return (
 
     <div>
-      <div className='divButton'>
-        <Link to="/home"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
-      </div>
+      
+      <ButtonBackHome/>
       <div className='container'>
 
         <form>

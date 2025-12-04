@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ButtonBackHome from '../../components/Buttons/buttonBackHome';
+import ButtonBack from '../../components/Buttons/buttonBack';
 
 function ForgetPassword() {
 
@@ -57,9 +59,7 @@ function ForgetPassword() {
     return (
 
         <div>
-            <div className='divButton'>
-                <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
-            </div>
+            <ButtonBack/>
             <div className='container'>
 
                 <form>

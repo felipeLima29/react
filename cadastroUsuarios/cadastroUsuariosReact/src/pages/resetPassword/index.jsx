@@ -7,7 +7,9 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './style.css';
-import InputPassword from "../../components/inputPassword";
+import InputPassword from "../../components/Inputs/inputPassword";
+import ButtonBack from "../../components/Buttons/buttonBack";
+import ButtonBackForgetPassword from "../../components/Buttons/buttonBackForgetPassword";
 
 function ResetPassword() {
 
@@ -74,9 +76,7 @@ function ResetPassword() {
 
     return (
         <div>
-            <div className="divButton">
-                <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
-            </div>
+            <ButtonBackForgetPassword/>
 
             <div className="div-data">
                 <form>

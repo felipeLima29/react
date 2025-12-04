@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './style.css';
 import { Link } from "react-router-dom";
+import ButtonBackHome from "../../components/Buttons/buttonBackHome";
 
 function Select() {
 
@@ -73,10 +74,7 @@ function Select() {
     return (
 
         <div>
-
-            <div className='divButton'>
-                <Link to="/home"><button className="navGoBack"><img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
-            </div>
+            <ButtonBackHome/>
 
             <div className="container">
 

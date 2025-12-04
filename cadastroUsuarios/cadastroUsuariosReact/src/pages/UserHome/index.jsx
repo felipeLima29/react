@@ -1,14 +1,13 @@
 import React from "react"
 import './style.css'
 import { Link } from "react-router-dom";
+import ButtonBack from "../../components/Buttons/buttonBack";
 
 function UserHome() {
 
     return (
         <div>
-            <div className="divButton">
-                <Link to="/"> <button className="navGoBack"> Sair </button> </Link>
-            </div>
+            <ButtonBack/>
             <div className="container">
 
                 <h1>Seja bem vindo!</h1>

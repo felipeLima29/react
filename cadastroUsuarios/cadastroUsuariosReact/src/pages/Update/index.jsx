@@ -7,6 +7,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './style.css'
+import ButtonBackHome from "../../components/Buttons/buttonBackHome";
 
 function UpdateUser() {
 
@@ -117,9 +118,7 @@ function UpdateUser() {
     return (
 
         <div>
-            <div className="divButton">
-                <Link to="/home"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
-            </div>
+            <ButtonBackHome/>
 
             <div className="div-data">
                 <form>
