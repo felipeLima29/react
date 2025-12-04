@@ -11,9 +11,10 @@
 
 .imgPassword {
     position: absolute;
-    top: 30%;
-    left: 10px;
-    transform: translateX(1500%);
+    transform: translateX(650%) translateY(10%);
+    width: 45px;
+    height: 40px;
+    background-color: transparent;
 }
 
 #forgetPassword {

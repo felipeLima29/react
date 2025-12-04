@@ -33,7 +33,7 @@ function ResetPassword() {
                 console.log(response.data.msg);
                 toast.success("Senha atualizada com sucesso.")
             }catch(error){
-                error.body;
+                toast.error('Erro ao acessar o servidor.')
             }
         }
     }

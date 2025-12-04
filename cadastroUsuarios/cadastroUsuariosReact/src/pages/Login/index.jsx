@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './style.css'
-import eyeClosed from '../../assets/iconEyeClosed.svg';
-import eyeOpen from '../../assets/iconEyeOpen.svg';
+import { Eye, EyeOff } from "lucide-react";
+import InputPassword from "../../components/inputPassword";
 
 function Login() {
 
@@ -13,20 +13,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const toggleShow = () => {
-        const input = document.querySelector("#inputPassword");
-        const img = document.querySelector("#imgPassword");
 
-        // Torna a senha visível.
-        if (input.type == "password") {
-            input.type = "text";
-            img.src = eyeOpen;
-        } else if (input.type == "text") {
-            input.type = "password";
-            img.src = eyeClosed;
-        }
-
-    }
 
     const handleLogin = async () => {
 
@@ -68,7 +55,7 @@ function Login() {
                         }
 
                     } catch (error) {
-                        error.body;
+                        toast.error('Erro ao acessar o servidor.');
                     }
 
                 } else {
@@ -82,13 +69,12 @@ function Login() {
                         console.log(token);
 
                     } catch (error) {
-                        error.body;
-                        toast.error("erro");
+                        toast.error("Erro ao gerar token.");
                     }
                 }
 
             } catch (error) {
-                error.body;
+                toast.error('Erro ao acessar o servidor.');
             }
         }
     }
@@ -98,28 +84,16 @@ function Login() {
         <div>
 
             <div className="container">
-                <h1 className="aaa">Seja bem vindo!</h1>
 
                 <form>
-                    <h2>Faça Login para acessar o sistema.</h2>
+                    <h1>Faça Login para acessar o sistema.</h1>
 
                     <input type="text"
                         placeholder="Digite seu email"
                         onChange={(e) => setEmail(e.target.value)}
                     />
-
-                    <div className="divPassword">
-
-                        <input type="password"
-                            placeholder="Digite sua senha"
-                            className="inputPassword"
-                            onChange={(e) => setPassword(e.target.value)}
-
-                        />
-                        <img className="imgPassword" onClick={toggleShow} src={eyeClosed} alt="Olho fechado" />
-
-                    </div>
-
+                    
+                    <InputPassword onChangePassword={(valor) => setPassword(valor)}/>
 
                     <button type="button" onClick={handleLogin}>Entrar</button>
 
