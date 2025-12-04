@@ -11,16 +11,18 @@ function ForgetPassword() {
     const [emailUser, setEmail] = useState('');
     const navigate = useNavigate();
 
-
+    // Regex para validar email.
     const validateEmail = (email) => {
         return email.match(
             /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
     };
 
+
     const getCod = async () => {
         const emailTrim = emailUser.trim();
 
+        // Verificações padrões.
         if (emailTrim == "" || emailTrim == null) {
             toast.info("Digite um email.")
         } else if (!validateEmail(emailTrim)) {
@@ -29,6 +31,7 @@ function ForgetPassword() {
             const email = emailTrim;
             toast.info('Tentando enviar código para seu email...', { autoClose: 3000 });
             try {
+                // Tenta fazer requisição.
                 const response = await axios.post('http://localhost:3001/forgetPassword', { email });
 
                 if (response.data.msg == "Este email não está cadastrado no sistema.") {
@@ -36,11 +39,12 @@ function ForgetPassword() {
                 } else if (response.data.msg == "Código de recuperação enviado com sucesso.") {
                     toast.success("Código enviado com sucesso.");
                     
-                    const code = response.data.code;
+                    // Armazena código vindo da requisição, e o id do usuário que irá alterar a senha.
+                    const code = response.data.code; 
                     const id = response.data.idUser;
                     localStorage.setItem('COD', code);
                     localStorage.setItem('IDUSER', id);
-                    navigate('/confirmCod');
+                    navigate('/confirmCod'); // Redireciona para tela de confirmar código.
                 }
             } catch (error) {
                 toast.error("Erro ao acessar servidor.")
@@ -54,7 +58,7 @@ function ForgetPassword() {
 
         <div>
             <div className='divButton'>
-                <Link to="/home"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
+                <Link to="/"><button id='navGoBack'> <img src={Back} alt='Icon voltar'></img> Voltar</button></Link>
             </div>
             <div className='container'>
 

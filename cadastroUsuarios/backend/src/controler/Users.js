@@ -4,15 +4,15 @@ import sendResetPassword from "../services/resetEmailService.js";
 
 dotenv.config();
 
+// Cria ambas as tabelas de Usuários e Administradores
 export async function createTable() {
-
-
     openDb().then(db => {
         db.exec('CREATE TABLE IF NOT EXISTS Usuarios (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
         db.exec('CREATE TABLE IF NOT EXISTS Administradores (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
     });
 }
 
+// Função para inserir usuário.
 export async function insertUser(req, res) {
     let user = req.body;
 
@@ -26,6 +26,7 @@ export async function insertUser(req, res) {
         const emailTrim = email.trim();
         const passwordTrim = password.trim();
 
+        // Verificações padrões.
         if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
             res.status(400);
             res.json({
@@ -64,6 +65,7 @@ export async function insertUser(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 }
 
+// Função para listar usuários.
 export async function selectAllUsers(req, res) {
     openDb().then(db => {
         try {
@@ -77,6 +79,7 @@ export async function selectAllUsers(req, res) {
     })
 }
 
+// Função para deletar usuários.
 export async function deleteUser(req, res) {
     let id = req.body.id;
 
@@ -84,6 +87,8 @@ export async function deleteUser(req, res) {
     openDb().then(db => {
         let idString = id.toString();
         let idTrim = idString.trim();
+
+        // Verificações padrões.
         if (idTrim == "" || idTrim == null) {
             res.json({
                 statusCode: 400,
@@ -104,6 +109,7 @@ export async function deleteUser(req, res) {
 
 }
 
+// Função para atualizar dados de usuários.
 export async function updateUser(req, res) {
     let usuario = req.body
 
@@ -114,38 +120,62 @@ export async function updateUser(req, res) {
         let emailTrim = usuario.email.trim();
         let passwordTrim = usuario.password.trim();
 
+        // Verificações padrões.
         if (idTrim == "" || nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
             res.status(400);
             res.json({
                 statusCode: 400,
                 msg: "Preencha todos os campos"
-            })
-        } else {
-            openDb().then(db => {
-                db.run("UPDATE Usuarios set nome=?, email=?, password=? WHERE id=?", [usuario.nome, usuario.email, usuario.password, usuario.id]);
             });
+        } else if (passwordTrim.length < 8) {
+            res.status(400);
             res.json({
-                statusCode: 200
-            })
+                statusCode: 400,
+                msg: "A senha deve conter ao menos 8 dígitos."
+            });
+        } else {
+
+            // Confere se existe um usuário com o id fornecido.
+            try {
+                openDb().then(db => {
+                    db.get('SELECT * FROM Usuarios WHERE id=?', [idTrim])
+                        .then(result => {
+                            if (!result) {
+                                res.json({ msg: "Id não cadastrado nesse sistema." })
+                            } else {
+                                openDb().then(db => {
+                                    db.run("UPDATE Usuarios set nome=?, email=?, password=? WHERE id=?", [usuario.nome, usuario.email, usuario.password, usuario.id]);
+                                });
+                                res.json({
+                                    msg: "Usuário atualizado com sucesso."
+                                });
+                            }
+                        })
+                })
+            } catch (error) {
+                res.status(500);
+            }
+
         }
 
     } catch (error) {
         error.body;
         res.status(400)
         res.json({
-            statusCode: "400",
             msg: "Ocorreu algum erro, confira se você inseriu todos os dados necessários."
         })
     }
 
 }
 
+// Função para listar um único usuário.
 export async function selectUser(req, res) {
     let id = req.body.id;
 
     let idString = id.toString();
     let idTrim = idString.trim();
 
+    // Verificações padrões.
     if (idTrim == "") {
         res.json({
             statusCode: 400,
@@ -154,7 +184,7 @@ export async function selectUser(req, res) {
     } else {
 
         try {
-
+            // Confere se existe um usuário com o id fornecido.
             openDb().then(db => {
                 db.get("SELECT * FROM Usuarios WHERE id=? ", [id]).then(user => res.json(user));
             })
@@ -170,10 +200,13 @@ export async function selectUser(req, res) {
     }
 }
 
+// Função para verificar se o email ja foi cadastrado no banco.
 export async function verifyEmail(req, res) {
     let email = req.body.email;
 
     let emailTrim = email.trim();
+
+    // Verificações padrões.
     if (emailTrim == "") {
         res.status(400);
         res.json({
@@ -202,12 +235,14 @@ export async function verifyEmail(req, res) {
 
 }
 
+// Função para fazer login do usuário.
 export async function loginUser(req, res) {
     let user = req.body;
 
     let emailTrim = user.email.trim();
     let passwordTrim = user.password.trim();
 
+    // Verificações padrões.
     if (emailTrim == "" || passwordTrim == "") {
         res.status(400)
         res.json({ msg: "Digite algo nos campos de email e password." });
@@ -215,7 +250,6 @@ export async function loginUser(req, res) {
         res.status(400);
         res.json({ msg: "A senha deve conter ao menos 8 dígitos." });
     } else {
-
         try {
             const email = emailTrim;
             const password = passwordTrim;
@@ -237,11 +271,13 @@ export async function loginUser(req, res) {
 
 }
 
+// Função para enviar código para o email do usuário.
 export async function forgetPassword(req, res) {
     const user = req.body;
 
     let emailTrim = user.email.trim();
 
+    // Verificações padrões.
     if (emailTrim == '' || emailTrim == null) {
         res.status(400);
         res.json({ msg: "Digite algo nos campos de email e password." });
@@ -249,12 +285,14 @@ export async function forgetPassword(req, res) {
         let email = emailTrim;
 
         try {
+            // Confere se existe um usuário com o email fornecido.
             openDb().then(db => {
                 db.get('SELECT * FROM Usuarios WHERE email=?', [email])
                     .then(result => {
                         if (!result) {
                             res.json({ msg: "Este email não está cadastrado no sistema." });
                         } else {
+                            // Gera um código de 6 dígitos aleatório.
                             let cod = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
                             const id = result.id;
                             cod = cod.toString();
@@ -262,6 +300,7 @@ export async function forgetPassword(req, res) {
                             const sendEmail = async () => {
 
                                 try {
+                                    // Aguarda a execução do método de enviar email.
                                     await sendResetPassword(email, cod);
                                     res.json({
                                         msg: "Código de recuperação enviado com sucesso.",
@@ -287,6 +326,7 @@ export async function forgetPassword(req, res) {
 
 }
 
+// Função para atualizar a senha do usuário.
 export async function resetPassword(req, res) {
     const data = req.body;
 
@@ -295,6 +335,7 @@ export async function resetPassword(req, res) {
     let passwordUserTrim = data.passwordUser.trim();
     let passwordUserConfirmTrim = data.passwordUserConfirm.trim();
 
+    // Verificações padrões.
     if (passwordUserTrim == "" || passwordUserTrim == null || passwordUserConfirmTrim == "" || passwordUserConfirmTrim == null || idUserTrim == "" || idUserTrim == null) {
         res.status(400);
         res.json({ msg: "Preencha todos os campos." });
@@ -307,14 +348,16 @@ export async function resetPassword(req, res) {
         let id = idUserTrim;
 
         try {
+            // Confere se existe um usuário com o id fornecido.
             openDb().then(db => {
                 db.get('SELECT * FROM Usuarios WHERE id=?', [id])
                     .then(result => {
                         if (!result) {
                             res.json({ msg: "Este id não está cadastrado no sistema." });
-                        }else{
+                        } else {
+                            // Atualiza a senha.
                             db.run("UPDATE Usuarios set password=? WHERE id=?", [password, id]);
-                            res.json({msg: "Senha atualizada com sucesso."})
+                            res.json({ msg: "Senha atualizada com sucesso." })
                         }
                     });
 

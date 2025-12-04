@@ -2,17 +2,17 @@ import { openDb } from "../openDB.js";
 import dotenv from 'dotenv';
 dotenv.config();
 
-export async function createTableAdmin() {
+export async function createTableAdmin() { // Insere um administrador no banco.
     const nomeAdmin = "admin";
-    const emailAdmin = process.env.EMAIL_ADMIN;
+    const emailAdmin = process.env.EMAIL_ADMIN; // Email e senha do .env
     const passwordAdmin = process.env.PASSWORD_ADMIN;
 
     openDb().then(db => {
         db.exec('CREATE TABLE IF NOT EXISTS Administradores (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
 
-        db.get('SELECT * FROM Administradores WHERE email = ?', [emailAdmin])
+        db.get('SELECT * FROM Administradores WHERE email = ?', [emailAdmin]) // Confere se o administrador já existe no banco.
             .then(row => {
-                if (!row) {
+                if (!row) { // Se não tiver, ele vai ser inserido.
                     db.run(
                         "INSERT INTO Administradores (nome, email, password) VALUES (?, ?, ?)",
                         [nomeAdmin, emailAdmin, passwordAdmin]);
@@ -21,12 +21,13 @@ export async function createTableAdmin() {
     });
 }
 
-export async function loginAdmin(req, res) {
+export async function loginAdmin(req, res) { // Fazer login do administrador.
     let admin = req.body;
 
     let emailTrim = admin.email.trim();
     let passwordTrim = admin.password.trim();
 
+    // Verificações padrões.
     if (emailTrim == "" || passwordTrim == "") {
         res.status(400)
         res.json({ msg: "Digite algo nos campos de email e password." });
@@ -34,10 +35,10 @@ export async function loginAdmin(req, res) {
         res.status(400);
         res.json({ msg: "A senha deve conter ao menos 8 dígitos." });
     } else {
-
         try {
             const email = emailTrim;
             const password = passwordTrim;
+            // Verifica se já existe um usuário com os dados fornecidos.
             openDb().then(db => {
                 db.get("SELECT * FROM Administradores WHERE email=? AND password=?", [email, password])
                     .then(user => {

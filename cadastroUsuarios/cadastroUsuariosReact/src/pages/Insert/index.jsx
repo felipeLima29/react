@@ -20,6 +20,7 @@ function Insert() {
     const input = document.querySelector(".inputPassword");
     const img = document.querySelector(".imgPassword");
 
+    // Torna a senha visível.
     if (input.type == "password") {
       input.type = "text";
       img.src = eyeOpen;
@@ -33,6 +34,7 @@ function Insert() {
   const handleInsert = async (e) => {
     e.preventDefault();
 
+    // Tenta receber código guardado no localStorage.
     const getToken = localStorage.getItem('token');
     console.log(getToken);
 
@@ -42,6 +44,7 @@ function Insert() {
     const emailTrim = emailUser.trim();
     const passwordTrim = passwordUser.trim();
 
+    // Verificações padrões.
     if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
       toast.error("Preencha todos os campos para inserir o usuário.");
     } else if (passwordUser.length < 8) {
@@ -57,7 +60,7 @@ function Insert() {
       } else {
 
         try {
-
+          // Verificar se email já existe no banco de dados.
           const response = await axios.post("http://localhost:3001/verifyEmail",
             { email },
             { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` } });
@@ -66,7 +69,7 @@ function Insert() {
             setEmailVerify(false); // Usuário não existe.
 
             try {
-
+              // Faz a requisição para inserir o usuário
               const response = await axios.post("http://localhost:3001/insertUser",
                 { nome, email, password },
                 {
@@ -103,7 +106,7 @@ function Insert() {
         } catch (error) {
           if(!error.response){
             toast.error("Erro ao acessar servidor.")
-          }else if(error.response?.status== 401){
+          }else if(error.response?.status== 401){ // Token inválido ou expirado.
             toast.error("Token inválido! Faça login novamente.")
           }else{
             toast.error("Erro inesperado")

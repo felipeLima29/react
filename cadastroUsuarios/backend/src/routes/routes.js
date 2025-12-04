@@ -14,7 +14,7 @@ router.get('/', (req, res)=>{
 router.post('/insertUser', middleware, insertUser);
 router.get('/listUsers', selectAllUsers);
 router.delete('/deleteUser', middleware, deleteUser);
-router.put('/updateUser', updateUser);
+router.put('/updateUser', middleware, updateUser);
 router.post('/listUser', selectUser);
 router.post('/verifyEmail', middleware, verifyEmail);
 router.post('/loginUser', loginUser);

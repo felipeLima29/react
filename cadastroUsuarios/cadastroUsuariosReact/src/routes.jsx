@@ -11,6 +11,8 @@ import ForgetPassword from "./pages/ForgetPassword";
 import ResetPassword from "./pages/resetPassword";
 import ConfirmCod from "./pages/ConfirmCod";
 
+// Arquivo de rotas de pages.
+
 export default function AppRoutes() {
        return (
               <div>

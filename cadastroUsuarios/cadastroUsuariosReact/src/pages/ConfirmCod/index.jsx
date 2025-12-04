@@ -8,15 +8,16 @@ function ConfirmCod() {
     const [code, setCode] = useState('');
     const navigate = useNavigate();
 
-    const verifyCod = async () =>{
+    const verifyCod = async () => {
+        // Tenta receber código guardado no localStorage.
         const getCod = localStorage.getItem('COD');
-        const getIdUser = localStorage.getItem
 
-        if(code !== getCod){
+        // Se o código for diferente do código inserido pelo usuário, retornará um toast exibindo mensagem de erro.
+        if (code !== getCod) {
             toast.error('Código inválido, tente novamente.');
-        }else{
+        } else {
             toast.success('Código válido.');
-            navigate('/ResetPassword');
+            navigate('/ResetPassword'); // Redireciona para a tela de mudar senha.
         }
     }
 
@@ -32,9 +33,7 @@ function ConfirmCod() {
                     <h1>Digite o código</h1>
                     <input type="number" placeholder='Código' maxLength={6} onChange={(e) => setCode(e.target.value)} />
 
-                    <button type='button' onClick={() => {
-                        verifyCod()
-                    }}>Verificar</button>
+                    <button type='button' onClick={() => { verifyCod() } }>Verificar</button>
                 </form>
             </div>
         </div>

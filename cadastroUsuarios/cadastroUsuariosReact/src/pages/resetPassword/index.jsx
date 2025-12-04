@@ -17,6 +17,7 @@ function ResetPassword() {
         const passwordTrim = password.trim();
         const passwordConfirmTrim = passwordConfirm.trim();
 
+        // Verificações padrões.
         if(passwordTrim !== passwordConfirmTrim){
             toast.error('As senhas não coincidem.');
         }else if(passwordTrim.length<8 || passwordConfirmTrim.length<8){
@@ -24,9 +25,10 @@ function ResetPassword() {
         }else{
             const passwordUser = passwordTrim;
             const passwordUserConfirm = passwordConfirmTrim;
-            const idUser = localStorage.getItem('IDUSER');
+            const idUser = localStorage.getItem('IDUSER'); // Recebe id guardado no localStorage.
 
             try{
+                // Faz a requisição para alterar a senha.
                 const response = await axios.post('http://localhost:3001/resetPassword', {passwordUser, passwordUserConfirm, idUser});
                 console.log(response.data.msg);
                 toast.success("Senha atualizada com sucesso.")
@@ -36,15 +38,13 @@ function ResetPassword() {
         }
     }
 
-    const HandleChange = async (event) => {
-        setPassword(event.target.value);
-        setPasswordConfirm(event.target.value);
-    };
+    
 
     const toggleShow = () => {
         const input = document.querySelector(".inputPassword");
         const img = document.querySelector(".imgPassword");
 
+        // Torna a senha visível.
         if (input.type == "password") {
             input.type = "text";
             img.src = eyeOpen;
@@ -59,6 +59,7 @@ function ResetPassword() {
         const input = document.querySelector(".inputPasswordConfirm");
         const img = document.querySelector(".imgPasswordConfirm");
 
+        // Torna a senha visível.
         if (input.type == "password") {
             input.type = "text";
             img.src = eyeOpen;

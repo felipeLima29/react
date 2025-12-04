@@ -15,9 +15,11 @@ function Select() {
     const listUsers = async () => {
 
         try {
+            // Faz a requisição para listar todos os usuários comum.
             const response = await axios.get("http://localhost:3001/listUsers");
 
             if (response.data) {
+                // Alimenta o array users com os dados retornados
                 setUsers(response.data);
 
             } else {
@@ -37,6 +39,7 @@ function Select() {
         const getToken = localStorage.getItem('token');
 
         try {
+            // Faz requisição para deletar usuário.
             const response = await axios.delete("http://localhost:3001/deleteUser", {
                 data: { id },
                 headers: {
@@ -49,7 +52,7 @@ function Select() {
         } catch (error) {
             if (!error.response) {
                 toast.error("Erro ao acessar servidor.")
-            } else if (error.response?.status == 401) {
+            } else if (error.response?.status == 401) { 
                 toast.error("Token inválido! Faça login novamente.")
             } else if (!id) {
                 toast.error('Id vazio.');
@@ -62,6 +65,7 @@ function Select() {
 
     };
 
+    // Lista os usuário quando renderizar a tela.
     useEffect(() => {
         listUsers();
     }, []);
@@ -76,7 +80,7 @@ function Select() {
 
             <div className="container">
 
-                {users.map((user) => (
+                {users.map((user) => ( // O .map lê um array e pode exibir cada um.
 
                     <div className='card' key={user.id}>
                         <div>

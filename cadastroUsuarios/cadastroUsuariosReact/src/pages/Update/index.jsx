@@ -20,6 +20,7 @@ function UpdateUser() {
         const input = document.querySelector(".inputPasswordUpdate");
         const img = document.querySelector(".imgPasswordUpdate");
 
+        // Torna a senha visível.
         if (input.type == "password") {
             input.type = "text";
             img.src = eyeOpen;
@@ -30,6 +31,7 @@ function UpdateUser() {
 
     }
 
+    // Atualiza o id.
     const HandleChange = async (event) => {
         setIdValue(event.target.value);
     };
@@ -45,35 +47,28 @@ function UpdateUser() {
 
     const listUser = async (id) => {
 
-        try {
-            if (!id) {
-                console.log("id nulo");
-                toast.error('Digite um id.');
-            } else {
+        if (!id) {
+            console.log("id nulo");
+            toast.error('Digite um id.');
+        } else {
+            try {
+                // Faz a requisição para listar o usuário.
+                const response = await axios.post('http://localhost:3001/listUser', { id });
 
-                try {
-                    const response = await axios.post('http://localhost:3001/listUser', { id });
-
-                    if (response.data == "") {
-                        toast.error('Não existe um usuário com esse Id.');
-                    } else {
-                        console.log(response.data);
-                        setUser([response.data]);
-                    }
-
-                } catch (error) {
-
-                    if (!error?.response) {
-                        //setError('Erro ao acessar o servidor');
-                        toast.error('Erro ao acessar o servidor.')
-                    }
-
+                // Se retornar vaziom o usuário não existe, consequentemente não pode ser modificado.
+                if (response.data == "") {
+                    toast.error('Não existe um usuário com esse Id.');
+                } else {
+                    console.log(response.data);
+                    setUser([response.data]); // Alimenta o array user com os dados fornecidos.
                 }
 
-            }
+            } catch (error) {
 
-        } catch (error) {
-            error.body;
+                if (!error?.response) {
+                    toast.error('Erro ao acessar o servidor.')
+                }
+            }
         }
     }
     const updateUser = async (id, nome, email, password) => {
@@ -83,19 +78,18 @@ function UpdateUser() {
         const passwordTrim = password.trim();
         let getToken = localStorage.getItem('token');
 
+        // Verificações padrões.
         if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
             toast.error('Preencha todos os campos.');
         } else if (passwordTrim.length < 8) {
             toast.error('A senha deve conter pelo menos 8 dígitos.')
         }
         else {
-
-
             nome = nomeTrim;
             email = emailTrim;
             password = passwordTrim;
             try {
-
+                // Faz requisição pra atualizar o usuário com os dados fornecidos.
                 const response = await axios.put('http://localhost:3001/updateUser',
                     { id, nome, email, password },
                     {
