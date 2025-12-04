@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ButtonBackHome from '../../components/Buttons/buttonBackHome';
 import ButtonBack from '../../components/Buttons/buttonBack';
+import InputEmail from '../../components/Inputs/inputEmail';
 
 function ForgetPassword() {
 
@@ -64,8 +65,7 @@ function ForgetPassword() {
 
                 <form>
                     <h1>Recuperar Senha</h1>
-                    <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-
+                    <InputEmail onChangeEmail={(value) => setEmail(value)}/>
                     <button type='button' onClick={getCod}>Recuperar</button>
                 </form>
 

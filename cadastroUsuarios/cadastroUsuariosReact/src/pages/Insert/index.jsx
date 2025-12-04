@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InputPassword from '../../components/Inputs/inputPassword';
 import ButtonBackHome from '../../components/Buttons/buttonBackHome';
+import InputEmail from '../../components/Inputs/inputEmail';
 
 
 function Insert() {
@@ -111,16 +112,14 @@ function Insert() {
   return (
 
     <div>
-      
       <ButtonBackHome/>
       <div className='container'>
 
         <form>
           <h1>Cadastro de Usuários</h1>
           <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
-          <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-
-          <InputPassword onChangePassword={(valor) => setPassword(valor)}/>
+          <InputEmail onChangeEmail={(value) => setEmail(value)}/>
+          <InputPassword onChangePassword={(value) => setPassword(value)}/>
 
           <button type='button' onClick={handleInsert}>Cadastrar</button>
         </form>

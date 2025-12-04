@@ -139,7 +139,8 @@ function UpdateUser() {
                         <input className="input-update"
                             type="text"
                             value={userSelected.id}
-                            readOnly />
+                            readOnly
+                        />
                         <p>Nome:</p>
                         <input className="input-update"
                             type="text"
@@ -152,7 +153,8 @@ function UpdateUser() {
                             type="text"
                             value={userSelected.email}
                             onChange={(e) => updateField(userSelected.id, "email", e.target.value)}
-                            required />
+                            required
+                        />
 
                         <p>Senha:</p>
                         <div className="divPasswordUpdate">

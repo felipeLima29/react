@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import './style.css'
 import { Eye, EyeOff } from "lucide-react";
 import InputPassword from "../../components/Inputs/inputPassword";
+import InputEmail from "../../components/Inputs/inputEmail";
 
 function Login() {
 
@@ -88,11 +89,7 @@ function Login() {
                 <form>
                     <h1>Faça Login para acessar o sistema.</h1>
 
-                    <input type="text"
-                        placeholder="Digite seu email"
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    
+                    <InputEmail onChangeEmail={(value) => setEmail(value)}/>
                     <InputPassword onChangePassword={(valor) => setPassword(valor)}/>
 
                     <button type="button" onClick={handleLogin}>Entrar</button>
