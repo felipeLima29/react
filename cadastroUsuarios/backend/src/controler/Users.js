@@ -290,10 +290,10 @@ export async function forgetPassword(req, res) {
 export async function resetPassword(req, res) {
     const data = req.body;
 
-    let passwordUserTrim = data.passwordUser.trim();
-    let passwordUserConfirmTrim = data.passwordUserConfirm.trim();
     let idUserString = data.idUser.toString();
     let idUserTrim = idUserString.trim();
+    let passwordUserTrim = data.passwordUser.trim();
+    let passwordUserConfirmTrim = data.passwordUserConfirm.trim();
 
     if (passwordUserTrim == "" || passwordUserTrim == null || passwordUserConfirmTrim == "" || passwordUserConfirmTrim == null || idUserTrim == "" || idUserTrim == null) {
         res.status(400);

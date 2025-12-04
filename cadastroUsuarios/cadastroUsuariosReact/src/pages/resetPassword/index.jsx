@@ -2,7 +2,7 @@ import axios from "axios"
 import Back from '../../assets/back.png'
 import eyeClosed from '../../assets/iconEyeClosed.svg';
 import eyeOpen from '../../assets/iconEyeOpen.svg';
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,17 +18,18 @@ function ResetPassword() {
         const passwordConfirmTrim = passwordConfirm.trim();
 
         if(passwordTrim !== passwordConfirmTrim){
-            toast.error('As senhas não coincidem.')
-        }else if(passwordTrim<8 || passwordConfirmTrim<8){
-            toast.error('A senha deve conter pelo menos 8 dígitos.')
+            toast.error('As senhas não coincidem.');
+        }else if(passwordTrim.length<8 || passwordConfirmTrim.length<8){
+            toast.error('A senha deve conter pelo menos 8 dígitos.');
         }else{
-            const password = passwordTrim;
-            const passwordConfirm = passwordConfirmTrim;
+            const passwordUser = passwordTrim;
+            const passwordUserConfirm = passwordConfirmTrim;
             const idUser = localStorage.getItem('IDUSER');
 
             try{
-                const response = await axios.post('http://localhost:3001/resetPassword', {password, passwordConfirm, idUser});
-                console.log(response.data.msg);x    
+                const response = await axios.post('http://localhost:3001/resetPassword', {passwordUser, passwordUserConfirm, idUser});
+                console.log(response.data.msg);
+                toast.success("Senha atualizada com sucesso.")
             }catch(error){
                 error.body;
             }
