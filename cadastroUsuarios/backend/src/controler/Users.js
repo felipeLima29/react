@@ -9,7 +9,7 @@ const userDAO = new UserDAO();
 const userUtil = new UserUtil();
 // Cria ambas as tabelas de Usuários e Administradores
 export async function createTable() {
-    await userDAO.creataTable();
+    await userDAO.createTable();
 }
 
 // Função para inserir usuário.
@@ -314,20 +314,6 @@ export async function resetPassword(req, res) {
                 await userDAO.updatePasswordUserDAO(password, id);
                 res.json({ msg: "Senha atualizada com sucesso." })
             }
-
-            // openDb().then(db => {
-            //     db.get('SELECT * FROM Usuarios WHERE id=?', [id])
-            //         .then(result => {
-            //             if (!result) {
-            //                 res.json({ msg: "Este id não está cadastrado no sistema." });
-            //             } else {
-            //                 // Atualiza a senha.
-            //                 db.run("UPDATE Usuarios set password=? WHERE id=?", [password, id]);
-            //                 res.json({ msg: "Senha atualizada com sucesso." })
-            //             }
-            //         });
-
-            // });
         } catch (error) {
             res.status(500);
             res.json({ msg: "Erro ao acessar o servidor." });

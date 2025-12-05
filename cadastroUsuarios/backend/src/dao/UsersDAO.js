@@ -6,7 +6,7 @@ export default class UserDAO {
     }
 
 
-    async creataTable() {
+    async createTable() {
         const db = await openDb();
         const create = await db.exec('CREATE TABLE IF NOT EXISTS Usuarios (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
 
