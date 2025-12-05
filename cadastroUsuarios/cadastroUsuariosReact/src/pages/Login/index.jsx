@@ -15,7 +15,6 @@ function Login() {
     const navigate = useNavigate();
 
 
-
     const handleLogin = async () => {
 
         const emailTrim = email.trim();

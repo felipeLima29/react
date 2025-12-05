@@ -15,7 +15,7 @@ router.post('/insertUser', middleware, insertUser);
 router.get('/listUsers', selectAllUsers);
 router.delete('/deleteUser', middleware, deleteUser);
 router.put('/updateUser', middleware, updateUser);
-router.post('/listUser', selectUser);
+router.post('/listUser', middleware, selectUser);
 router.post('/verifyEmail', middleware, verifyEmail);
 router.post('/loginUser', loginUser);
 router.post('/loginAdmin', loginAdmin);
