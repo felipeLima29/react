@@ -11,5 +11,11 @@ export default class UserUtil {
 
         return verifyUser;
     }
+    async verifyEmailUtil(email){
+        const db = await openDb();
+        const verifyEmail = await db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email]);
+
+        return verifyEmail;
+    }
 
 }

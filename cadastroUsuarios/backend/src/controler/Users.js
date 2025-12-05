@@ -159,13 +159,10 @@ export async function selectUser(req, res) {
             msg: "Digite um id."
         })
     } else {
-
         try {
             // Confere se existe um usuário com o id fornecido.
-            openDb().then(db => {
-                db.get("SELECT * FROM Usuarios WHERE id=? ", [id]).then(user => res.json(user));
-            })
-
+            const user = await userDAO.selectUserDAO(id);
+            res.json(user);
         } catch (error) {
             res.status(400);
             res.json({
@@ -193,17 +190,15 @@ export async function verifyEmail(req, res) {
     } else {
 
         try {
-            openDb().then(db => {
-                db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email])
-                    .then(user => {
-                        if (!user) {
-                            res.json({ msg: "Email não cadastrado." });
-                        }
-                        res.json(user);
-                    });
-            });
+            const user = await userUtil.verifyEmailUtil(email);
+            if (!user) {
+                res.json({ msg: "Email não cadastrado." });
+            } else {
+                res.json(user);
+            }
         } catch (error) {
-            error.body;
+            res.status(500);
+            res.json({ msg: "Erro ao acessar servidor." });
         }
 
     }
@@ -228,16 +223,12 @@ export async function loginUser(req, res) {
         try {
             const email = emailTrim;
             const password = passwordTrim;
-            openDb().then(db => {
-                db.get("SELECT * FROM Usuarios WHERE email=? AND password=?", [email, password])
-                    .then(user => {
-                        if (!user) {
-                            res.json({ msg: "Usuário não encontrado." })
-                        }
-
-                        res.json(user);
-                    });
-            });
+            const user = await userDAO.loginUserDAO(email, password);
+            if (!user) {
+                res.json({ msg: "Usuário não encontrado." });
+            } else {
+                res.json(user);
+            }
         } catch (error) {
             res.json({ msg: "Erro ao buscar usuário" });
         }
@@ -253,46 +244,42 @@ export async function forgetPassword(req, res) {
     // Verificações padrões.
     if (emailTrim == '' || emailTrim == null) {
         res.status(400);
-        res.json({ msg: "Digite algo nos campos de email e password." });
+        res.json({ msg: "Digite algo no email." });
     } else {
         let email = emailTrim;
+        console.log(email);
         try {
             // Confere se existe um usuário com o email fornecido.
-            openDb().then(db => {
-                db.get('SELECT * FROM Usuarios WHERE email=?', [email])
-                    .then(result => {
-                        if (!result) {
-                            res.json({ msg: "Este email não está cadastrado no sistema." });
-                        } else {
-                            // Gera um código de 6 dígitos aleatório.
-                            let cod = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
-                            const id = result.id;
-                            cod = cod.toString();
+            const verifyEmail = await userUtil.verifyEmailUtil(email);
+            console.log(verifyEmail);
+            if (!verifyEmail) {
+                res.json({ msg: "Este email não está cadastrado no sistema." });
+            } else {
+                // Gera um código de 6 dígitos aleatório.
+                let cod = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+                const id = verifyEmail.id;
+                cod = cod.toString();
 
-                            const sendEmail = async () => {
-                                try {
-                                    // Aguarda a execução do método de enviar email.
-                                    await sendResetPassword(email, cod);
-                                    res.json({
-                                        msg: "Código de recuperação enviado com sucesso.",
-                                        code: cod,
-                                        idUser: id
-                                    });
-                                } catch (error) {
-                                    res.status(500);
-                                    res.json({ msg: "Ocorreu algum erro inesperado." });
-                                }
-                            }
-                            sendEmail();
-
-                        }
-                    });
-            });
+                const sendEmail = async () => {
+                    try {
+                        // Aguarda a execução do método de enviar email.
+                        await sendResetPassword(email, cod);
+                        res.json({
+                            msg: "Código de recuperação enviado com sucesso.",
+                            code: cod,
+                            idUser: id
+                        });
+                    } catch (error) {
+                        res.status(500);
+                        res.json({ msg: "Ocorreu algum erro inesperado." });
+                    }
+                }
+                sendEmail();
+            }
         } catch (error) {
-            error.body;
+            res.status(500);
+            res.json({ msg: "Erro ao acessar o servidor." });
         }
-
-
     }
 
 }
@@ -320,21 +307,30 @@ export async function resetPassword(req, res) {
 
         try {
             // Confere se existe um usuário com o id fornecido.
-            openDb().then(db => {
-                db.get('SELECT * FROM Usuarios WHERE id=?', [id])
-                    .then(result => {
-                        if (!result) {
-                            res.json({ msg: "Este id não está cadastrado no sistema." });
-                        } else {
-                            // Atualiza a senha.
-                            db.run("UPDATE Usuarios set password=? WHERE id=?", [password, id]);
-                            res.json({ msg: "Senha atualizada com sucesso." })
-                        }
-                    });
+            const verifyUser = await userUtil.verifyUserIdUtil(id);
+            if (!verifyUser) {
+                res.json({ msg: "Este id não está cadastrado no sistema." });
+            }else{
+                await userDAO.updatePasswordUserDAO(password, id);
+                res.json({ msg: "Senha atualizada com sucesso." })
+            }
 
-            });
+            // openDb().then(db => {
+            //     db.get('SELECT * FROM Usuarios WHERE id=?', [id])
+            //         .then(result => {
+            //             if (!result) {
+            //                 res.json({ msg: "Este id não está cadastrado no sistema." });
+            //             } else {
+            //                 // Atualiza a senha.
+            //                 db.run("UPDATE Usuarios set password=? WHERE id=?", [password, id]);
+            //                 res.json({ msg: "Senha atualizada com sucesso." })
+            //             }
+            //         });
+
+            // });
         } catch (error) {
-            error.body;
+            res.status(500);
+            res.json({ msg: "Erro ao acessar o servidor." });
         }
     }
 }

@@ -30,16 +30,36 @@ export default class UserDAO {
         const db = await openDb();
         const deleteUser = await db.run("DELETE FROM Usuarios WHERE id=?",
             [id]);
-        
+
         return deleteUser;
     }
-    async updateUserDAO(nome, email, password, id){
+    async updateUserDAO(nome, email, password, id) {
         const db = await openDb();
         const updateUser = await db.run("UPDATE Usuarios set nome=?, email=?, password=? WHERE id=?",
             [nome, email, password, id]);
 
         return updateUser;
     }
+    async selectUserDAO(id) {
+        const db = await openDb();
+        const selectUser = await db.get("SELECT * FROM Usuarios WHERE id=? ",
+            [id]);
 
+        return selectUser;
+    }
+    async loginUserDAO(email, password) {
+        const db = await openDb();
+        const loginUser = await db.get("SELECT * FROM Usuarios WHERE email=? AND password=?",
+            [email, password]);
+
+        return loginUser;
+    }
+    async updatePasswordUserDAO(password, id){
+        const db = await openDb();
+        const updatePassword = await db.run("UPDATE Usuarios set password=? WHERE id=?",
+            [password, id]);
+
+        return updatePassword;
+    }
 }
 
