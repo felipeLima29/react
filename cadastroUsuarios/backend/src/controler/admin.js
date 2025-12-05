@@ -11,24 +11,12 @@ export async function createTableAdmin() { // Insere um administrador no banco.
     const passwordAdmin = process.env.PASSWORD_ADMIN;
 
     await adminDAO.createTable(); // Cria tabela.
-    
+
     const verify = await adminDAO.verifyAdmin(emailAdmin); // Confere se o administrador já existe no banco.
+    
     if(!verify){ // Se não tiver, insere o usuário.
         await adminDAO.insertAdmin(nomeAdmin, emailAdmin, passwordAdmin);
     }
-
-    // openDb().then(db => {
-    //     db.exec('CREATE TABLE IF NOT EXISTS Administradores (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
-
-    //     db.get('SELECT * FROM Administradores WHERE email = ?', [emailAdmin]) 
-    //         .then(row => {
-    //             if (!row) { // Se não tiver, ele vai ser inserido. 
-    //                 db.run(
-    //                     "INSERT INTO Administradores (nome, email, password) VALUES (?, ?, ?)",
-    //                     [nomeAdmin, emailAdmin, passwordAdmin]);
-    //             }
-    //         })
-    // });
 }
 
 export async function loginAdmin(req, res) { // Fazer login do administrador.
