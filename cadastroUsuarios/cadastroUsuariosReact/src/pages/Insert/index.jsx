@@ -120,7 +120,6 @@ function Insert() {
           <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
           <InputEmail onChangeEmail={(value) => setEmail(value)}/>
           <InputPassword onChangePassword={(value) => setPassword(value)}/>
-
           <button type='button' onClick={handleInsert}>Cadastrar</button>
         </form>
 

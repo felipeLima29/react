@@ -1,15 +1,15 @@
 import { openDb } from "../openDB.js";
-import dotenv from 'dotenv';
 import sendResetPassword from "../services/resetEmailService.js";
-
+import UserDAO from '../dao/UsersDAO.js';
+import UserUtil from "../utils/userUtils.js";
+import dotenv from 'dotenv';
 dotenv.config();
 
+const userDAO = new UserDAO();
+const userUtil = new UserUtil();
 // Cria ambas as tabelas de Usuários e Administradores
 export async function createTable() {
-    openDb().then(db => {
-        db.exec('CREATE TABLE IF NOT EXISTS Usuarios (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
-        db.exec('CREATE TABLE IF NOT EXISTS Administradores (id INTEGER PRIMARY KEY, nome TEXT, email TEXT, password TEXT)');
-    });
+    await userDAO.creataTable();
 }
 
 // Função para inserir usuário.
@@ -32,20 +32,15 @@ export async function insertUser(req, res) {
             res.json({
                 msg: "Preencha todos os campos."
             });
-        } else if (passwordTrim < 8) {
+        } else if (passwordTrim.length < 8) {
             res.status(400);
             res.json({
                 msg: "A senha deve conter mais que 8 dígitos."
             });
         } else {
             try {
-                openDb().then(db => {
-                    db.run("INSERT INTO Usuarios (nome, email, password) VALUES (?, ?, ?) ", [user.nome, user.email, user.password]);
-                    res.json({
-                        statusCode: 200,
-                        msg: "Usuário inserido com sucesso."
-                    })
-                })
+                await userDAO.insertUserDAO(user.nome, user.email, user.password);
+                res.json({ msg: "Usuário inserido com sucesso!" });
             } catch (error) {
                 error.body;
             }
@@ -67,16 +62,12 @@ export async function insertUser(req, res) {
 
 // Função para listar usuários.
 export async function selectAllUsers(req, res) {
-    openDb().then(db => {
-        try {
-            db.all("SELECT * FROM Usuarios").then(pessoas => res.json(pessoas, {
-                statusCode: "200"
-            }));
-
-        } catch (error) {
-            error.body;
-        }
-    })
+    try {
+        const users = await userDAO.selectAllUsersDAO();
+        res.json(users);
+    } catch (error) {
+        error.body;
+    }
 }
 
 // Função para deletar usuários.
@@ -84,28 +75,26 @@ export async function deleteUser(req, res) {
     let id = req.body.id;
 
 
-    openDb().then(db => {
-        let idString = id.toString();
-        let idTrim = idString.trim();
+    let idString = id.toString();
+    let idTrim = idString.trim();
 
-        // Verificações padrões.
-        if (idTrim == "" || idTrim == null) {
+    if (idTrim == "" || idTrim == null) {
+        res.json({
+            statusCode: 400,
+            msg: "Digite um id."
+        })
+    } else {
+        try {
+            await userDAO.deleteUsqerDAO(id);
+            res.json({ msg: "Usuário deletado com sucesso." });
+        } catch (error) {
+            res.status(400);
             res.json({
-                statusCode: 400,
-                msg: "Digite um id."
-            })
-        } else {
-            try {
-                db.run("DELETE FROM Usuarios WHERE id=?", [id])
-                    .then(response => res.json({ msg: "Usuário deletado com sucesso." }));
-            } catch (res) {
-                res.code(400);
-                res.json({
-                    statusCode: "400"
-                });
-            }
+                msg: "Erro ao deletar usuário.",
+                statusCode: "400"
+            });
         }
-    })
+    }
 
 }
 
@@ -113,13 +102,12 @@ export async function deleteUser(req, res) {
 export async function updateUser(req, res) {
     let usuario = req.body
 
+    let idString = usuario.id.toString();
+    let idTrim = idString.trim();
+    let nomeTrim = usuario.nome.trim();
+    let emailTrim = usuario.email.trim();
+    let passwordTrim = usuario.password.trim();
     try {
-        let idString = usuario.id.toString();
-        let idTrim = idString.trim();
-        let nomeTrim = usuario.nome.trim();
-        let emailTrim = usuario.email.trim();
-        let passwordTrim = usuario.password.trim();
-
         // Verificações padrões.
         if (idTrim == "" || nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
             res.status(400);
@@ -130,36 +118,25 @@ export async function updateUser(req, res) {
         } else if (passwordTrim.length < 8) {
             res.status(400);
             res.json({
-                statusCode: 400,
                 msg: "A senha deve conter ao menos 8 dígitos."
             });
         } else {
-
             // Confere se existe um usuário com o id fornecido.
             try {
-                openDb().then(db => {
-                    db.get('SELECT * FROM Usuarios WHERE id=?', [idTrim])
-                        .then(result => {
-                            if (!result) {
-                                res.json({ msg: "Id não cadastrado nesse sistema." })
-                            } else {
-                                openDb().then(db => {
-                                    db.run("UPDATE Usuarios set nome=?, email=?, password=? WHERE id=?", [usuario.nome, usuario.email, usuario.password, usuario.id]);
-                                });
-                                res.json({
-                                    msg: "Usuário atualizado com sucesso."
-                                });
-                            }
-                        })
-                })
+                const result = await userUtil.verifyUserIdUtil(idTrim);
+                if (!result) {
+                    res.json({ msg: "Id não cadastrado nesse sistema." })
+                } else {
+                    await userDAO.updateUserDAO(usuario.nome, usuario.email, usuario.password, usuario.id);
+                    res.json({ msg: "Usuário atualizado com sucesso." });
+                }
             } catch (error) {
                 res.status(500);
+                res.json({ msg: "Ocorreu um erro no servidor." });
             }
-
         }
 
     } catch (error) {
-        error.body;
         res.status(400)
         res.json({
             msg: "Ocorreu algum erro, confira se você inseriu todos os dados necessários."
@@ -220,11 +197,9 @@ export async function verifyEmail(req, res) {
                 db.get("SELECT * FROM Usuarios WHERE email LIKE ?", [email])
                     .then(user => {
                         if (!user) {
-                            res.json({ msg: "Email não cadastrado." })
+                            res.json({ msg: "Email não cadastrado." });
                         }
-
-                        res.json(user)
-
+                        res.json(user);
                     });
             });
         } catch (error) {
@@ -266,9 +241,7 @@ export async function loginUser(req, res) {
         } catch (error) {
             res.json({ msg: "Erro ao buscar usuário" });
         }
-
     }
-
 }
 
 // Função para enviar código para o email do usuário.
@@ -283,7 +256,6 @@ export async function forgetPassword(req, res) {
         res.json({ msg: "Digite algo nos campos de email e password." });
     } else {
         let email = emailTrim;
-
         try {
             // Confere se existe um usuário com o email fornecido.
             openDb().then(db => {
@@ -298,7 +270,6 @@ export async function forgetPassword(req, res) {
                             cod = cod.toString();
 
                             const sendEmail = async () => {
-
                                 try {
                                     // Aguarda a execução do método de enviar email.
                                     await sendResetPassword(email, cod);

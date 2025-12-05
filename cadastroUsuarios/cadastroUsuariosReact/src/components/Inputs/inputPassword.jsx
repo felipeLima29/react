@@ -23,8 +23,8 @@ function InputPassword( {onChangePassword} ) {
 
             />
             <button className="imgPassword" onClick={handlePassword} type="button">
-                {isShow && <EyeOff size={18} />}
-                {!isShow && <Eye size={18} />}
+                {!isShow && <EyeOff size={18} />}
+                {isShow && <Eye size={18} />}
             </button>
         
         </div>
