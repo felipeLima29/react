@@ -85,7 +85,7 @@ export async function deleteUser(req, res) {
         })
     } else {
         try {
-            await userDAO.deleteUsqerDAO(id);
+            await userDAO.deleteUserDAO(id);
             res.json({ msg: "Usuário deletado com sucesso." });
         } catch (error) {
             res.status(400);
@@ -162,7 +162,14 @@ export async function selectUser(req, res) {
         try {
             // Confere se existe um usuário com o id fornecido.
             const user = await userDAO.selectUserDAO(id);
-            res.json(user);
+            console.log("oi");
+            if (!user) {
+                res.json({ msg: "Usuário não encontrado." })
+                console.log(user);
+            } else {
+                res.json(user);
+                console.log(user);
+            }
         } catch (error) {
             res.status(400);
             res.json({
@@ -170,7 +177,6 @@ export async function selectUser(req, res) {
                 msg: "Ocorreu algum erro."
             })
         }
-
     }
 }
 
@@ -310,7 +316,7 @@ export async function resetPassword(req, res) {
             const verifyUser = await userUtil.verifyUserIdUtil(id);
             if (!verifyUser) {
                 res.json({ msg: "Este id não está cadastrado no sistema." });
-            }else{
+            } else {
                 await userDAO.updatePasswordUserDAO(password, id);
                 res.json({ msg: "Senha atualizada com sucesso." })
             }

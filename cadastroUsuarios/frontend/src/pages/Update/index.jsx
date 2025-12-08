@@ -17,6 +17,14 @@ function UpdateUser() {
     const [idValue, setIdValue] = useState(userId);
     const [user, setUser] = useState([]);
 
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
+
     const toggleShow = () => {
         const input = document.querySelector(".inputPasswordUpdate");
         const img = document.querySelector(".imgPasswordUpdate");
@@ -47,15 +55,21 @@ function UpdateUser() {
 
 
     const listUser = async (id) => {
+        const getToken = localStorage.getItem('token');
+        console.log(getToken);
 
         if (!id) {
             console.log("id nulo");
             toast.error('Digite um id.');
+        } else if (!getToken || getToken == null || getToken == "") {
+            toast.error("Token inválido ou expirado.");
         } else {
             try {
                 // Faz a requisição para listar o usuário.
-                const response = await axios.post('http://localhost:3001/listUser', { id });
-
+                const response = await axios.post('http://localhost:3001/listUser',
+                    { id },
+                    { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` } }
+                );
                 // Se retornar vaziom o usuário não existe, consequentemente não pode ser modificado.
                 if (response.data == "") {
                     toast.error('Não existe um usuário com esse Id.');
@@ -83,9 +97,10 @@ function UpdateUser() {
         if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
             toast.error('Preencha todos os campos.');
         } else if (passwordTrim.length < 8) {
-            toast.error('A senha deve conter pelo menos 8 dígitos.')
-        }
-        else {
+            toast.error('A senha deve conter pelo menos 8 dígitos.');
+        } else if(!validateEmail(emailTrim)){
+            toast.error("Digite um email válido.");
+        } else {
             nome = nomeTrim;
             email = emailTrim;
             password = passwordTrim;
@@ -118,7 +133,7 @@ function UpdateUser() {
     return (
 
         <div>
-            <ButtonBackHome/>
+            <ButtonBackHome />
 
             <div className="div-data">
                 <form>

@@ -18,6 +18,15 @@ function Insert() {
   const [nomeUser, setName] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
 
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+
   const handleInsert = async (e) => {
     e.preventDefault();
 
@@ -36,8 +45,9 @@ function Insert() {
       toast.error("Preencha todos os campos para inserir o usuário.");
     } else if (passwordUser.length < 8) {
       toast.error('A senha deve conter pelo menos 8 caracteres.');
-    } else {
-
+    } else if (!validateEmail(emailTrim)) {
+      toast.error("Digite um email válido.")
+    } else{
       const nome = nomeTrim;
       const email = emailTrim;
       const password = passwordTrim;
@@ -91,14 +101,14 @@ function Insert() {
           }
 
         } catch (error) {
-          if(!error.response){
+          if (!error.response) {
             toast.error("Erro ao acessar servidor.")
-          }else if(error.response?.status== 401){ // Token inválido ou expirado.
+          } else if (error.response?.status == 401) { // Token inválido ou expirado.
             toast.error("Token inválido! Faça login novamente.")
-          }else{
+          } else {
             toast.error("Erro inesperado")
           }
-          
+
         }
 
       }
@@ -112,14 +122,14 @@ function Insert() {
   return (
 
     <div>
-      <ButtonBackHome/>
+      <ButtonBackHome />
       <div className='container'>
 
         <form>
           <h1>Cadastro de Usuários</h1>
           <input type="text" placeholder='Nome' onChange={(e) => setName(e.target.value)} />
-          <InputEmail onChangeEmail={(value) => setEmail(value)}/>
-          <InputPassword onChangePassword={(value) => setPassword(value)}/>
+          <InputEmail onChangeEmail={(value) => setEmail(value)} />
+          <InputPassword onChangePassword={(value) => setPassword(value)} />
           <button type='button' onClick={handleInsert}>Cadastrar</button>
         </form>
 

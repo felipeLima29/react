@@ -14,6 +14,13 @@ function Login() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
 
     const handleLogin = async () => {
 
@@ -24,6 +31,8 @@ function Login() {
             toast.error("Preencha todos os campos para inserir o usuário.");
         } else if (password.length < 8) {
             toast.error('A senha deve conter pelo menos 8 caracteres.');
+        } else if (!validateEmail(email)) {
+            toast.error("Digite um email válido.")
         } else {
 
             try {
@@ -88,8 +97,8 @@ function Login() {
                 <form>
                     <h1>Faça Login para acessar o sistema.</h1>
 
-                    <InputEmail onChangeEmail={(value) => setEmail(value)}/>
-                    <InputPassword onChangePassword={(valor) => setPassword(valor)}/>
+                    <InputEmail onChangeEmail={(value) => setEmail(value)} />
+                    <InputPassword onChangePassword={(valor) => setPassword(valor)} />
 
                     <button type="button" onClick={handleLogin}>Entrar</button>
 
