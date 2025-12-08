@@ -12,7 +12,8 @@ function UserHome() {
 
                 <h1>Seja bem vindo!</h1>
 
-                <Link to="/select"><button id="navSelect">Visualizar Usuários</button></Link>
+                <p className="msg">Você é um usuário comum, portanto, não pode alterar nada neste sistema.</p>
+                <p className="msg">Aguarde atualizações!!!</p>
             </div>
         </div>
     )
