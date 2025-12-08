@@ -1,11 +1,8 @@
 import axios from 'axios';
-import './style.css';
-import Back from '../../assets/back.png';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ButtonBackHome from '../../components/Buttons/buttonBackHome';
 import ButtonBack from '../../components/Buttons/buttonBack';
 import InputEmail from '../../components/Inputs/inputEmail';
 

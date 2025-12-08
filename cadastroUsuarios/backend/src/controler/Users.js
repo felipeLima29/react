@@ -154,6 +154,7 @@ export async function selectUser(req, res) {
 
     // Verificações padrões.
     if (idTrim == "") {
+        res.status(400);
         res.json({
             statusCode: 400,
             msg: "Digite um id."

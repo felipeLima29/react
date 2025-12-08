@@ -1,6 +1,5 @@
 import axios from "axios";
 import Trash from '../../assets/trash.png';
-import Back from '../../assets/back.png';
 import Update from '../../assets/update.png'
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";

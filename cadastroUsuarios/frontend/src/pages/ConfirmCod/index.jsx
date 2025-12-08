@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Back from '../../assets/back.png'
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ButtonBackForgetPassword from "../../components/Buttons/buttonBackForgetPassword";

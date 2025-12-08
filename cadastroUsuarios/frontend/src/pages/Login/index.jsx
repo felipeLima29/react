@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './style.css'
-import { Eye, EyeOff } from "lucide-react";
 import InputPassword from "../../components/Inputs/inputPassword";
 import InputEmail from "../../components/Inputs/inputEmail";
 
@@ -28,7 +27,7 @@ function Login() {
         const passwordTrim = password.trim();
         // Verificações padrões.
         if (emailTrim == "" || passwordTrim == "") {
-            toast.error("Preencha todos os campos para inserir o usuário.");
+            toast.error("Preencha todos os campos para realizar o login.");
         } else if (password.length < 8) {
             toast.error('A senha deve conter pelo menos 8 caracteres.');
         } else if (!validateEmail(email)) {

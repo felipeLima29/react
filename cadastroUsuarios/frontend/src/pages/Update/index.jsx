@@ -1,5 +1,4 @@
-import axios from "axios"
-import Back from '../../assets/back.png'
+import axios from "axios";
 import eyeClosed from '../../assets/iconEyeClosed.svg';
 import eyeOpen from '../../assets/iconEyeOpen.svg';
 import { Link, useLocation } from "react-router-dom";

@@ -1,9 +1,6 @@
 import axios from 'axios';
 import './style.css';
-import eyeClosed from '../../assets/iconEyeClosed.svg';
-import eyeOpen from '../../assets/iconEyeOpen.svg';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InputPassword from '../../components/Inputs/inputPassword';
