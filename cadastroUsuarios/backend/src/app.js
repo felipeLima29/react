@@ -1,7 +1,6 @@
 import express from 'express';
 import router from './routes/routes.js';
 import cors from 'cors';
-import { openDb } from './openDB.js';
 import { createTable } from './controler/Users.js';
 import { createTableAdmin } from './controler/admin.js';
 

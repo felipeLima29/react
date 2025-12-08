@@ -1,16 +1,25 @@
-import { openDb } from "../openDB.js";
 import sendResetPassword from "../services/resetEmailService.js";
 import UserDAO from '../dao/UsersDAO.js';
 import UserUtil from "../utils/userUtils.js";
 import dotenv from 'dotenv';
 dotenv.config();
 
+// Instancia as classes
 const userDAO = new UserDAO();
 const userUtil = new UserUtil();
+
 // Cria ambas as tabelas de Usuários e Administradores
 export async function createTable() {
     await userDAO.createTable();
 }
+
+const validateEmail = (email) => {
+    return String(email)
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+};
 
 // Função para inserir usuário.
 export async function insertUser(req, res) {
@@ -20,39 +29,45 @@ export async function insertUser(req, res) {
     let email = user.email;
     let password = user.password;
 
-
     if (typeof nome === 'string' || typeof email === 'string' || typeof password === 'string') {
         const nomeTrim = nome.trim();
         const emailTrim = email.trim();
         const passwordTrim = password.trim();
 
-        // Verificações padrões.
-        if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
+        if (!validateEmail(emailTrim)) {
             res.status(400);
-            res.json({
-                msg: "Preencha todos os campos."
-            });
-        } else if (passwordTrim.length < 8) {
-            res.status(400);
-            res.json({
-                msg: "A senha deve conter mais que 8 dígitos."
-            });
+            res.json({ msg: "Digite um email válido." })
         } else {
             try {
-                await userDAO.insertUserDAO(user.nome, user.email, user.password);
-                res.json({ msg: "Usuário inserido com sucesso!" });
+                const verifyEmail = await userUtil.verifyEmailUtil(emailTrim);
+                if (verifyEmail) {
+                    res.json({ msg: "Email já cadastrado no sistema." });
+                } else {
+                    // Verificações padrões.
+                    if (nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
+                        res.status(400);
+                        res.json({ msg: "Preencha todos os campos." });
+                    } else if (passwordTrim.length < 8) {
+                        res.status(400);
+                        res.json({ msg: "A senha deve conter mais que 8 dígitos." });
+                    } else {
+                        try {
+                            await userDAO.insertUserDAO(user.nome, user.email, user.password);
+                            res.json({ msg: "Usuário inserido com sucesso!" });
+                        } catch (error) {
+                            res.status(500);
+                            res.json({ msg: "Ocorreu um erro no servidor." });
+                        }
+                    }
+                }
             } catch (error) {
-                error.body;
+                res.status(500);
+                res.json({ msg: "Erro ao acessar o servidor." });
             }
         }
-
-
     } else {
-        res.status(400)
-        res.json({
-            msg: "Erro na tipagem dos dados fornecidos"
-        })
-
+        res.status(400);
+        res.json({ msg: "Erro na tipagem dos dados fornecidos" });
     }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -66,7 +81,8 @@ export async function selectAllUsers(req, res) {
         const users = await userDAO.selectAllUsersDAO();
         res.json(users);
     } catch (error) {
-        error.body;
+        res.status(500);
+        res.json({ msg: "Ocorreu um erro no servidor." });
     }
 }
 
@@ -79,21 +95,26 @@ export async function deleteUser(req, res) {
     let idTrim = idString.trim();
 
     if (idTrim == "" || idTrim == null) {
-        res.json({
-            statusCode: 400,
-            msg: "Digite um id."
-        })
+        res.json({ msg: "Digite um id." });
     } else {
         try {
-            await userDAO.deleteUserDAO(id);
-            res.json({ msg: "Usuário deletado com sucesso." });
+            const user = await userUtil.verifyUserIdUtil(idTrim);
+            if (!user) {
+                res.json({ msg: "Não existe um usuário cadastrado com esse id." });
+            } else {
+                try {
+                    await userDAO.deleteUserDAO(id);
+                    res.json({ msg: "Usuário deletado com sucesso." });
+                } catch (error) {
+                    res.status(500);
+                    res.json({ msg: "Erro ao deletar usuário." });
+                }
+            }
+
         } catch (error) {
-            res.status(400);
-            res.json({
-                msg: "Erro ao deletar usuário.",
-                statusCode: "400"
-            });
+            res.json();
         }
+
     }
 
 }
@@ -107,42 +128,27 @@ export async function updateUser(req, res) {
     let nomeTrim = usuario.nome.trim();
     let emailTrim = usuario.email.trim();
     let passwordTrim = usuario.password.trim();
-    try {
-        // Verificações padrões.
-        if (idTrim == "" || nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
-            res.status(400);
-            res.json({
-                statusCode: 400,
-                msg: "Preencha todos os campos"
-            });
-        } else if (passwordTrim.length < 8) {
-            res.status(400);
-            res.json({
-                msg: "A senha deve conter ao menos 8 dígitos."
-            });
-        } else {
-            // Confere se existe um usuário com o id fornecido.
-            try {
-                const result = await userUtil.verifyUserIdUtil(idTrim);
-                if (!result) {
-                    res.json({ msg: "Id não cadastrado nesse sistema." })
-                } else {
-                    await userDAO.updateUserDAO(usuario.nome, usuario.email, usuario.password, usuario.id);
-                    res.json({ msg: "Usuário atualizado com sucesso." });
-                }
-            } catch (error) {
-                res.status(500);
-                res.json({ msg: "Ocorreu um erro no servidor." });
+
+    if (idTrim == "" || nomeTrim == "" || emailTrim == "" || passwordTrim == "") {
+        res.status(400);
+        res.json({ msg: "Preencha todos os campos" });
+    } else if (passwordTrim.length < 8) {
+        res.status(400);
+        res.json({ msg: "A senha deve conter ao menos 8 dígitos." });
+    } else {
+        try {
+            const result = await userUtil.verifyUserIdUtil(idTrim);
+            if (!result) {
+                res.json({ msg: "Id não cadastrado nesse sistema." });
+            } else {
+                await userDAO.updateUserDAO(usuario.nome, usuario.email, usuario.password, usuario.id);
+                res.json({ msg: "Usuário atualizado com sucesso." });
             }
+        } catch (error) {
+            res.status(500);
+            res.json({ msg: "Ocorreu um erro no servidor." });
         }
-
-    } catch (error) {
-        res.status(400)
-        res.json({
-            msg: "Ocorreu algum erro, confira se você inseriu todos os dados necessários."
-        })
     }
-
 }
 
 // Função para listar um único usuário.
@@ -155,28 +161,19 @@ export async function selectUser(req, res) {
     // Verificações padrões.
     if (idTrim == "") {
         res.status(400);
-        res.json({
-            statusCode: 400,
-            msg: "Digite um id."
-        })
+        res.json({ msg: "Digite um id." });
     } else {
         try {
             // Confere se existe um usuário com o id fornecido.
             const user = await userDAO.selectUserDAO(id);
-            console.log("oi");
             if (!user) {
-                res.json({ msg: "Usuário não encontrado." })
-                console.log(user);
+                res.json({ msg: "Usuário não encontrado." });
             } else {
                 res.json(user);
-                console.log(user);
             }
         } catch (error) {
-            res.status(400);
-            res.json({
-                statusCode: "400",
-                msg: "Ocorreu algum erro."
-            })
+            res.status(500);
+            res.json({ msg: "Ocorreu algum erro." });
         }
     }
 }
@@ -190,10 +187,7 @@ export async function verifyEmail(req, res) {
     // Verificações padrões.
     if (emailTrim == "") {
         res.status(400);
-        res.json({
-            statusCode: 400,
-            msg: "Digite um email."
-        })
+        res.json({ msg: "Digite um email." });
     } else {
 
         try {
@@ -237,6 +231,7 @@ export async function loginUser(req, res) {
                 res.json(user);
             }
         } catch (error) {
+            res.status(500);
             res.json({ msg: "Erro ao buscar usuário" });
         }
     }
@@ -254,7 +249,6 @@ export async function forgetPassword(req, res) {
         res.json({ msg: "Digite algo no email." });
     } else {
         let email = emailTrim;
-        console.log(email);
         try {
             // Confere se existe um usuário com o email fornecido.
             const verifyEmail = await userUtil.verifyEmailUtil(email);

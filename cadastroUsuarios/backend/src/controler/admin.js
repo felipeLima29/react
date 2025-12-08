@@ -43,11 +43,11 @@ export async function loginAdmin(req, res) { // Fazer login do administrador.
                         if (!user) {
                             res.json({ msg: "Usuário não encontrado." })
                         }
-
                         res.json(user);
                     });
             });
         } catch (error) {
+            res.status(500);
             res.json({ msg: "Erro ao buscar usuário" });
         }
 

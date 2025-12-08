@@ -12,7 +12,7 @@ router.get('/', (req, res)=>{
 })
 
 router.post('/insertUser', middleware, insertUser);
-router.get('/listUsers', selectAllUsers);
+router.get('/listUsers', middleware, selectAllUsers);
 router.delete('/deleteUser', middleware, deleteUser);
 router.put('/updateUser', middleware, updateUser);
 router.post('/listUser', middleware, selectUser);
