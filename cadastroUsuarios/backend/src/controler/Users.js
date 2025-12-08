@@ -80,6 +80,7 @@ export async function selectAllUsers(req, res) {
     try {
         const users = await userDAO.selectAllUsersDAO();
         res.json(users);
+        console.log(users);
     } catch (error) {
         res.status(500);
         res.json({ msg: "Ocorreu um erro no servidor." });

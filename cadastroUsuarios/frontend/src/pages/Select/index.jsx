@@ -13,10 +13,14 @@ function Select() {
     const [users, setUsers] = useState([]);
 
     const listUsers = async () => {
+        const getToken = localStorage.getItem('token');
+        console.log(getToken);
 
         try {
             // Faz a requisição para listar todos os usuários comum.
-            const response = await axios.get("http://localhost:3001/listUsers");
+            const response = await axios.get("http://localhost:3001/listUsers",
+                { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken}` } }
+            );
 
             if (response.data) {
                 // Alimenta o array users com os dados retornados
@@ -52,7 +56,7 @@ function Select() {
         } catch (error) {
             if (!error.response) {
                 toast.error("Erro ao acessar servidor.")
-            } else if (error.response?.status == 401) { 
+            } else if (error.response?.status == 401) {
                 toast.error("Token inválido! Faça login novamente.")
             } else if (!id) {
                 toast.error('Id vazio.');
@@ -73,7 +77,7 @@ function Select() {
     return (
 
         <div>
-            <ButtonBackHome/>
+            <ButtonBackHome />
 
             <div className="container">
 
