@@ -13,6 +13,7 @@ function UserHome() {
                 <p className="msg">Você é um usuário comum, portanto, não pode alterar nada neste sistema.</p>
                 <p className="msg">Aguarde atualizações!!!</p>
             </div>
+            <p>v. 0.0.1</p>
         </div>
     )
 }

@@ -5,7 +5,7 @@ import { loginAdmin } from "../controler/admin.js";
 
 const router = Router();
 
-router.get('/', (req, res)=>{
+router.get('/', (req, res) => {
     res.json({
         msg: "Api atualizada."
     })
