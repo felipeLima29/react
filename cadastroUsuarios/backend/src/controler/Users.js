@@ -299,7 +299,6 @@ export async function resetPassword(req, res) {
   let idUserTrim = data.id;
   let passwordUserTrim = data.password.trim();
   let passwordUserConfirmTrim = data.passwordConfirm.trim();
-  console.log(idUserTrim, passwordUserTrim, passwordUserConfirmTrim); 
 
   // Verificações padrões.
   if (
